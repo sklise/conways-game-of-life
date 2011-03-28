@@ -17,7 +17,7 @@ Grid board;
 int[][][] world;
 boolean kill = false;
 
-HashMap forms = new HashMap();
+HashMap forms = new HashMap(20);
 
 void setup()
 {
@@ -28,18 +28,20 @@ void setup()
 
 	world = new int[board.gw][board.gh][2];
 	
-	forms.put("BLOCK",				"2,2,1,1,1,1");
-	forms.put("GLIDER",				"3,3,0,0,1,1,0,1,0,1,1");
-	forms.put("BLINKER",			"3,3,0,1,0,0,1,0,0,1,0");
-	forms.put("R-PENTOMINO",		"3,3,0,1,1,1,1,0,0,1,0");
-	forms.put("BOAT",				"3,3,1,1,0,1,0,1,0,1,0");
-	forms.put("HERSCHEL",			"3,4,1,0,0,1,1,1,1,0,1,0,0,1");
-	forms.put("TOAD",				"4,2,0,1,1,1,1,1,1,0");
-	forms.put("AIRCRAFT CARRIER",	"4,3,1,1,0,0,1,0,0,1,0,0,1,1");
-	forms.put("BEEHIVE",			"4,3,0,1,1,0,1,0,0,1,0,1,1,0");
-	forms.put("BEACON",				"4,4,1,1,0,0,1,0,0,0,0,0,0,1,0,0,1,1");
-	forms.put("LOAF",				"4,4,0,1,1,0,1,0,0,1,0,1,0,1,0,0,1,0");
-	forms.put("LIGHTWEIGHT SPACESHIP","5,4,0,1,0,0,1,1,0,0,0,0,1,0,0,0,1,1,1,1,1,0");
+	forms.put("BLOCK",					"2,2,1,1,1,1");
+	forms.put("GLIDER",					"3,3,0,0,1,1,0,1,0,1,1");
+	forms.put("BLINKER",				"3,3,0,1,0,0,1,0,0,1,0");
+	forms.put("R-PENTOMINO",			"3,3,0,1,1,1,1,0,0,1,0");
+	forms.put("BOAT",					"3,3,1,1,0,1,0,1,0,1,0");
+	forms.put("HERSCHEL",				"3,4,1,0,0,1,1,1,1,0,1,0,0,1");
+	forms.put("TOAD",					"4,2,0,1,1,1,1,1,1,0");
+	forms.put("AIRCRAFT CARRIER",		"4,3,1,1,0,0,1,0,0,1,0,0,1,1");
+	forms.put("BEEHIVE",				"4,3,0,1,1,0,1,0,0,1,0,1,1,0");
+	forms.put("BEACON",					"4,4,1,1,0,0,1,0,0,0,0,0,0,1,0,0,1,1");
+	forms.put("LOAF",					"4,4,0,1,1,0,1,0,0,1,0,1,0,1,0,0,1,0");
+	forms.put("LIGHTWEIGHT SPACESHIP",	"5,4,0,1,0,0,1,1,0,0,0,0,1,0,0,0,1,1,1,1,1,0");
+	forms.put("PULSAR","15,15,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,0,0,0,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,1,0,1,0,0,0,0,1,0,0,1,0,0,0,0,1,0,1,0,0,0,0,1,0,0,1,0,0,0,0,1,0,1,0,0,0,0,1,0,0,0,0,1,1,1,0,0,0,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,0,0,0,1,1,1,0,0,0,0,1,0,0,0,0,1,0,1,0,0,0,0,1,0,0,1,0,0,0,0,1,0,1,0,0,0,0,1,0,0,1,0,0,0,0,1,0,1,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,0,0,0,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0");
+	forms.put("LIDKA","9,15,0,1,0,0,0,0,0,0,0,1,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,1,0,1,0,0,0,0,0,1,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,0,0")
 }
 
 void draw()
@@ -89,6 +91,7 @@ void draw()
 		}
 	}
 	ifClear();
+	//println("running");
 }
 
 void ifClear() // Function to clear the entire world.
@@ -109,7 +112,7 @@ void ifClear() // Function to clear the entire world.
 
 void mouseDragged() // dragging the mouse is different than clicking. Requires mousePressed() for initial condition.
 {
-	if (mouseX > board.tx && mouseX < board.bx && mouseY < board.by && mouseY > board.ty)
+	if (mouseX > board.tx && mouseX < board.bx && mouseY < board.by && mouseY > board.ty && (window.cforms == undefined || window.cforms == ""))
 	{
 		PVector t = board.toGrid(mouseX, mouseY);
 		if (!kill)
@@ -265,7 +268,8 @@ class Grid
 
 void placeForm(String thisform, int mx, int my)
 {
-	String form = forms.get(thisform);
+	String form = (String)forms.get(thisform);
+	String[] df = split(form,',');
 	int[] intvals = int(split(form,','));
 	int dx = intvals[0];
 	int dy = intvals[1];
