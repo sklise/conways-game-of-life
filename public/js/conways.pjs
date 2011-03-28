@@ -149,7 +149,7 @@ void mouseClicked() // Single cell birth or death, as well as placing forms.
 		PVector l = board.toGrid(mouseX, mouseY);
 		if (mouseButton == LEFT)
 		{
-			if(window.cforms == "SINGLE CELL")
+			if(window.cforms == "SINGLE CELL" || window.cforms == undefined)
 			{
 				world[(int)l.x][(int)l.y][0] = (world[(int)l.x][(int)l.y][0]+1)%2;
 			}
