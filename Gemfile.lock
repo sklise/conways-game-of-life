@@ -1,0 +1,29 @@
+GEM
+  remote: http://rubygems.org/
+  specs:
+    addressable (2.2.4)
+    aws-s3 (0.6.2)
+      builder
+      mime-types
+      xml-simple
+    builder (3.0.0)
+    dm-core (1.1.0)
+      addressable (~> 2.2.4)
+    dm-migrations (1.1.0)
+      dm-core (~> 1.1.0)
+    mime-types (1.16)
+    rack (1.2.2)
+    sinatra (1.2.1)
+      rack (~> 1.1)
+      tilt (< 2.0, >= 1.2.2)
+    tilt (1.2.2)
+    xml-simple (1.0.15)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  aws-s3
+  dm-core
+  dm-migrations
+  sinatra
