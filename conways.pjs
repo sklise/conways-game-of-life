@@ -8,7 +8,9 @@
 
 // TODO:
 // - Control Panel
-// - Speed variance.
+// - Redefine forms to include dimensions in the first two spots
+// - - "Glider","3,3,0,0,1,1,0,1,0,1,1"
+// - - Will require redoing the draw function.
 
 Grid board;
 //boolean running;
@@ -26,18 +28,18 @@ void setup()
 
 	world = new int[board.gw][board.gh][2];
 	
-	forms.put("GLIDER","0,0,1,1,0,1,0,1,1");
-	forms.put("BLINKER","0,1,0,0,1,0,0,1,0");
-	forms.put("R-PENTOMINO","0,1,1,1,1,0,0,1,0");
-	forms.put("BEACON","1,1,0,0,1,0,0,0,0,0,0,1,0,0,1,1");
-	forms.put("TOAD","0,0,0,0,0,1,1,1,1,1,1,0,0,0,0,0");
-	forms.put("HERSCHEL","1,0,0,0,1,1,1,0,1,0,1,0,0,0,1,0");
-	forms.put("BLOCK","1,1,0,1,1,0,0,0,0");
-	forms.put("AIRCRAFT CARRIER","1,1,0,0,1,0,0,1,0,0,1,1,0,0,0,0");
-	forms.put("BEEHIVE","0,1,1,0,1,0,0,1,0,1,1,0,0,0,0,0");
-	forms.put("BOAT","1,1,0,1,0,1,0,1,0");
-	forms.put("LOAF","0,1,1,0,1,0,0,1,0,1,0,1,0,0,1,0");
-	forms.put("LIGHTWEIGHT SPACESHIP","0,1,0,0,1,1,0,0,0,0,1,0,0,0,1,1,1,1,1,0,0,0,0,0,0");
+	forms.put("BLOCK",				"2,2,1,1,1,1");
+	forms.put("GLIDER",				"3,3,0,0,1,1,0,1,0,1,1");
+	forms.put("BLINKER",			"3,3,0,1,0,0,1,0,0,1,0");
+	forms.put("R-PENTOMINO",		"3,3,0,1,1,1,1,0,0,1,0");
+	forms.put("BOAT",				"3,3,1,1,0,1,0,1,0,1,0");
+	forms.put("HERSCHEL",			"3,4,1,0,0,1,1,1,1,0,1,0,0,1");
+	forms.put("TOAD",				"4,2,0,1,1,1,1,1,1,0");
+	forms.put("AIRCRAFT CARRIER",	"4,3,1,1,0,0,1,0,0,1,0,0,1,1");
+	forms.put("BEEHIVE",			"4,3,0,1,1,0,1,0,0,1,0,1,1,0");
+	forms.put("BEACON",				"4,4,1,1,0,0,1,0,0,0,0,0,0,1,0,0,1,1");
+	forms.put("LOAF",				"4,4,0,1,1,0,1,0,0,1,0,1,0,1,0,0,1,0");
+	forms.put("LIGHTWEIGHT SPACESHIP","5,4,0,1,0,0,1,1,0,0,0,0,1,0,0,0,1,1,1,1,1,0");
 }
 
 void draw()
@@ -261,69 +263,17 @@ class Grid
 	}
 }
 
-void placeForm(String thisform, int x, int y)
+void placeForm(String thisform, int mx, int my)
 {
-	String rule = forms.get(thisform);
-	int[] intvals = int(split(rule,','));
-	int fx = x;
-	int fy = y;
-	if(intvals.length == 9)
+	String form = forms.get(thisform);
+	int[] intvals = int(split(form,','));
+	int dx = intvals[0];
+	int dy = intvals[1];
+	for(int x = 0; x<dx; x++)
 	{
-		world[fx][fy][0] = intvals[0];
-		world[fx+1][fy][0] = intvals[1];
-		world[fx+2][fy][0] = intvals[2];
-		world[fx][fy+1][0] = intvals[3];
-		world[fx+1][fy+1][0] = intvals[4];
-		world[fx+2][fy+1][0] = intvals[5];
-		world[fx][fy+2][0] = intvals[6];
-		world[fx+1][fy+2][0] = intvals[7];
-		world[fx+2][fy+2][0] = intvals[8];
-	}
-	else if(intvals.length == 16)
-	{
-		world[fx][fy][0] = intvals[0];
-		world[fx+1][fy][0] = intvals[1];
-		world[fx+2][fy][0] = intvals[2];
-		world[fx+3][fy][0] = intvals[3];
-		world[fx][fy+1][0] = intvals[4];
-		world[fx+1][fy+1][0] = intvals[5];
-		world[fx+2][fy+1][0] = intvals[6];
-		world[fx+3][fy+1][0] = intvals[7];
-		world[fx][fy+2][0] = intvals[8];
-		world[fx+1][fy+2][0] = intvals[9];
-		world[fx+2][fy+2][0] = intvals[10];
-		world[fx+3][fy+2][0] = intvals[11];
-		world[fx][fy+3][0] = intvals[12];
-		world[fx+1][fy+3][0] = intvals[13];
-		world[fx+2][fy+3][0] = intvals[14];
-		world[fx+3][fy+3][0] = intvals[15];
-	}
-	else if(intvals.length == 25)
-	{
-		world[fx][fy][0] = intvals[0];
-		world[fx+1][fy][0] = intvals[1];
-		world[fx+2][fy][0] = intvals[2];
-		world[fx+3][fy][0] = intvals[3];
-		world[fx+4][fy][0] = intvals[4];
-		world[fx][fy+1][0] = intvals[5];
-		world[fx+1][fy+1][0] = intvals[6];
-		world[fx+2][fy+1][0] = intvals[7];
-		world[fx+3][fy+1][0] = intvals[8];
-		world[fx+4][fy+1][0] = intvals[9];
-		world[fx][fy+2][0] = intvals[10];
-		world[fx+1][fy+2][0] = intvals[11];
-		world[fx+2][fy+2][0] = intvals[12];
-		world[fx+3][fy+2][0] = intvals[13];
-		world[fx+4][fy+2][0] = intvals[14];
-		world[fx][fy+3][0] = intvals[15];
-		world[fx+1][fy+3][0] = intvals[16];
-		world[fx+2][fy+3][0] = intvals[17];
-		world[fx+3][fy+3][0] = intvals[18];
-		world[fx+4][fy+3][0] = intvals[19];
-		world[fx][fy+4][0] = intvals[20];
-		world[fx+1][fy+4][0] = intvals[21];
-		world[fx+2][fy+4][0] = intvals[22];
-		world[fx+3][fy+4][0] = intvals[23];
-		world[fx+4][fy+4][0] = intvals[24];
+		for(int y = 0; y<dy; y++)
+		{
+			world[mx+x][my+y][0] = intvals[2+x+dx*y];
+		}
 	}
 }
