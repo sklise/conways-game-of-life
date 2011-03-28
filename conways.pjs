@@ -112,7 +112,7 @@ void ifClear() // Function to clear the entire world.
 
 void mouseDragged() // dragging the mouse is different than clicking. Requires mousePressed() for initial condition.
 {
-	if (mouseX > board.tx && mouseX < board.bx && mouseY < board.by && mouseY > board.ty && (window.cforms == undefined || window.cforms == ""))
+	if (mouseX > board.tx && mouseX < board.bx && mouseY < board.by && mouseY > board.ty && window.cforms == "SINGLE CELL"))
 	{
 		PVector t = board.toGrid(mouseX, mouseY);
 		if (!kill)
@@ -149,7 +149,7 @@ void mouseClicked() // Single cell birth or death, as well as placing forms.
 		PVector l = board.toGrid(mouseX, mouseY);
 		if (mouseButton == LEFT)
 		{
-			if(window.cforms == undefined || window.cforms == "")
+			if(window.cforms == "SINGLE CELL")
 			{
 				world[(int)l.x][(int)l.y][0] = (world[(int)l.x][(int)l.y][0]+1)%2;
 			}
