@@ -7,10 +7,20 @@ GEM
       mime-types
       xml-simple
     builder (3.0.0)
+    data_objects (0.10.3)
+      addressable (~> 2.1)
     dm-core (1.1.0)
       addressable (~> 2.2.4)
+    dm-do-adapter (1.1.0)
+      data_objects (~> 0.10.2)
+      dm-core (~> 1.1.0)
     dm-migrations (1.1.0)
       dm-core (~> 1.1.0)
+    dm-sqlite-adapter (1.1.0)
+      dm-do-adapter (~> 1.1.0)
+      do_sqlite3 (~> 0.10.2)
+    do_sqlite3 (0.10.3)
+      data_objects (= 0.10.3)
     mime-types (1.16)
     rack (1.2.2)
     sinatra (1.2.1)
@@ -26,4 +36,5 @@ DEPENDENCIES
   aws-s3
   dm-core
   dm-migrations
+  dm-sqlite-adapter
   sinatra
