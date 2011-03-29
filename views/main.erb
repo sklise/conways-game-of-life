@@ -1,9 +1,9 @@
 <div id="controlpanel">
 	<ul>
+		<li><h1>Conway's Game of Life</h1></li>
 		<li><input id="conway_running" type="button" value="RUN"/></li>
 		<li><input id="conway_edges" type="button" value="EDGES ON"></li>
 		<li><input id="conway_clear" type="button" value="CLEAR GRID"/></li>
-		<li>SPEED:<input name="conway_speed" type="range" min="1" max="60" step="1" value="12">  <span id="conway_speed"></span></li>
 		<li>FORMS:
 			<select name="conway_forms">
 				<option>SINGLE CELL</option>
@@ -31,18 +31,10 @@
 				</optgroup>
 			</select>
 		</li>
-		<li>
-			<a href="http://www.conwaylife.com/wiki/index.php?title=Main_Page">MORE INFO</a>
-		</li>
-		<li>
-			<a href="https://github.com/stevenklise/ConwaysGameOfLife">SOURCE</a>
-		</li>
-		<li>
-			PROCESSING CODE BASED ON <a href="http://processing.org/learning/topics/conway.html">&lsquo;Conway's Game of Life,&rsquo;</a> BY MIKE DAVIS.
-		</li>
-		<li>COLOPHON</li>
+		<li><span  id="speedmeter">SPEED:<input name="conway_speed" type="range" min="1" max="60" step="1" value="12">  <span id="conway_speed"></span></span></li>
 		<li id="debug"></li>
 	</ul>
+	<p id="colophon"><a href="/colophon">COLOPHON</a></p>
 	<div class="breaker">&nbsp;</div>
 </div>
 <script src="/js/processing-1.1.0.js"></script>

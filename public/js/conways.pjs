@@ -23,7 +23,7 @@ void setup()
 {
 	size(window.sketchWidth, window.sketchHeight);
 	frameRate(window.speed);
-	board = new Grid(3, 45, width-3, height-3, 10);
+	board = new Grid(10, 10, width-10, height-3, 10);
 	window.running = false;
 
 	world = new int[board.gw][board.gh][2];

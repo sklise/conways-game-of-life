@@ -1,10 +1,20 @@
 body{
-	background: #000;
-	color: #ffffff;
+	background: #000000;
+	color: #eee;
 	font-family: 'Verdana',sans-serif;
+	font-size: 12px;
 	margin: 0;
 	padding: 0;
+	position: relative;
 	top:0;
+}
+a, a:visited
+{
+	color: #0792e2;
+}
+a:hover, a:focus
+{
+	color: #f0ff08;
 }
 .breaker
 {
@@ -13,28 +23,99 @@ body{
 }
 #controlpanel
 {
-	margin: 0;
-	position: fixed;
 	background:#333333;
-	font-family: Verdana;
-	font-size: 12px;
-	color: #fff;
-	padding:.5em;
+	background: -moz-linear-gradient(0% 100% 90deg,#111111, #333333, #666666 100%);
+	background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#666666), to(#111111), color-stop(.4,#333333));
+	margin: 0;
+	position: relative;
+	top: 0;
+	left: 0;
+	padding:.5em 0;
+	-webkit-box-shadow: 0 1px 1px rgba(255,255,255,0.2);
+	-moz-box-shadow: 0 1px 1px rgba(255,255,255,0.2);
+	box-shadow: 0 1px 1px rgba(255,255,255,0.2);
+}
+#controlpanel h1
+{
+	font-size: 130%;
+	margin: 0;
+	padding: .3em 0 0 0;
 }
 #controlpanel ul
 {
 	list-style: none;
-	margin:0;
+	margin: 0 0 0 .5em;
+	padding: 0;
+}
+#colophon
+{
+	float: right;
+	margin: .4em 1em;
+	text-align: right;
+}
+#colophon>a
+{
+	color:#9f9f9f;
+}
+#colophon>a:hover
+{
+	color: #0792e2;
+}
+input[type="button"]
+{
+	background: #09147c;
+	background: -moz-linear-gradient(0% 100% 90deg,#0B3254, #145C9C, #2197FF 100%);
+	background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#2197FF), to(#0B3254), color-stop(.6,#145C9C));
+	-webkit-border-radius: 12px;
+	-mox-border-radius: 12px;
+	border-radius: 12px;
+	border: none;
+	color: #eee;
+	font-weight: bold;
+	padding: .5em .8em;
+	text-align: center;
+	text-shadow: 0 1px 1px rgba(0,0,0,.5);
+}
+input[type="button"]:hover,
+input[type="button"]:focus
+{
+	-webkit-box-shadow: 0 0 4px rgba(255,255,255,.8);
+	-moz-box-shadow: 0 0 4px rgba(255,255,255,.8);
+	box-shadow: 0 0 4px rgba(255,255,255,.8);
+}
+#conway_running
+{
+	width: 6em;
+}
+#conway_edges
+{
+	width: 8em;
 }
 #controlpanel ul li
 {
-	-webkit-border-radius: 2px;
-	-mox-border-radius: 2px;
-	border-radius: 2px;
-	background: #f03259;
 	display: block;
 	float: left;
-	margin: 0 1em;
+	margin: 0 .2em;
 	padding: .2em;
 	text-align: center;
+}
+canvas
+{
+	margin: 0 auto;
+}
+#info
+{
+	position: relative;
+	margin: 0 auto;
+	padding: 0 3em;
+	width: 40.5em; /* 486 px / 12px =  */
+}
+#info ul
+{
+	margin: 0;
+	padding: 0;
+}
+#info ul li
+{
+	margin: 0 0 .25em 0;
 }
