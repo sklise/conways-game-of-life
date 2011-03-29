@@ -1,5 +1,4 @@
-DataMapper.setup(:default, 'sqlite:///Users/sklise/Sites/ConwaysGameOfLife/dbconway.db')
-
+DataMapper.setup(:default, ENV['DATABASE_URL'] ||  'sqlite:///Users/sklise/Sites/ConwaysGameOfLife/dbconway.db')
 class Pattern
   include DataMapper::Resource
   
@@ -23,5 +22,5 @@ class Category
   has n, :patterns, :required => false
 end
 
-DataMapper.auto_upgrade!
+# DataMapper.auto_upgrade!
 # DataMapper.auto_migrate!

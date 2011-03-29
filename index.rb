@@ -1,10 +1,13 @@
 require 'bundler'
 Bundler.require
-# require 'patterns'
-
+require 'patterns'
 
 get "/" do
   erb :main
+end
+
+get "/colophon" do
+  erb :colophon
 end
 
 # get "/patterns/new" do
