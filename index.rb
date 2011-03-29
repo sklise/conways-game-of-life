@@ -1,6 +1,6 @@
 require 'bundler'
 Bundler.require
-require 'patterns'
+//require 'patterns'
 
 get "/" do
   erb :main
