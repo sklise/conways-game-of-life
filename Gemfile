@@ -9,7 +9,7 @@ group :development do
   gem 'dm-sqlite-adapter'
 end
 
-#group :production do 
-#  gem 'dm-postgres-adapter'
-#  gem 'do_postgres'
-#end
+group :production do 
+  gem 'dm-postgres-adapter'
+  gem 'do_postgres'
+end
