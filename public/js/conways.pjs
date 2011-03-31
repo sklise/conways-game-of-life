@@ -106,7 +106,8 @@ void ifClear() // Function to clear the entire world.
 				world[x][y][1] = 0;
 			}
 		}
-		window.running = false; // Pause the simulation because
+		window.running = false;
+		$('#conway_running').val('RUN');
 		window.cleargrid = false;
 	}
 }

@@ -27,14 +27,16 @@ $(document).ready(function(){
 	// Pausing and playing the simulation.
 	$('#conway_running').click(function(){
 		window.running = !window.running;
+		var state = '';
 		if(window.running)
 		{
-			$(this).val('PAUSE');
+			state = 'PAUSE';
 		}
 		else
 		{
-			$(this).val('RUN');
+			state = 'RUN';
 		}
+		$('#conway_running').val(state);
 	});
 	
 	// EDGES
