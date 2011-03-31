@@ -18,7 +18,7 @@ $(document).ready(function(){
 	
 	// clear grid.
 	$('#conway_clear').click(function(){
-		window.cclear = true;
+		window.cleargrid = true;
 	});
 	
 	// LI element for debugging.
@@ -59,7 +59,7 @@ $(document).ready(function(){
 	});
 	
 	// Take select value and save in a global variable
-	$('select[name=conway_forms]').change(function(){
-		window.cforms = $(this).val();
+	$('select[name=conway_patterns]').change(function(){
+		window.patterns = $(this).val();
 	});
 });

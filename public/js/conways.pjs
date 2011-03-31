@@ -8,7 +8,7 @@
 
 // TODO:
 // - Control Panel
-// - Redefine forms to include dimensions in the first two spots
+// - Redefine patterns to include dimensions in the first two spots
 // - - "Glider","3,3,0,0,1,1,0,1,0,1,1"
 // - - Will require redoing the draw function.
 
@@ -17,7 +17,7 @@ Grid board;
 int[][][] world;
 boolean kill = false;
 
-HashMap forms = new HashMap(20);
+HashMap patterns = new HashMap(20);
 
 void setup()
 {
@@ -28,20 +28,20 @@ void setup()
 
 	world = new int[board.gw][board.gh][2];
 	
-	forms.put("BLOCK",					"2,2,1,1,1,1");
-	forms.put("GLIDER",					"3,3,0,0,1,1,0,1,0,1,1");
-	forms.put("BLINKER",				"3,3,0,1,0,0,1,0,0,1,0");
-	forms.put("R-PENTOMINO",			"3,3,0,1,1,1,1,0,0,1,0");
-	forms.put("BOAT",					"3,3,1,1,0,1,0,1,0,1,0");
-	forms.put("HERSCHEL",				"3,4,1,0,0,1,1,1,1,0,1,0,0,1");
-	forms.put("TOAD",					"4,2,0,1,1,1,1,1,1,0");
-	forms.put("AIRCRAFT CARRIER",		"4,3,1,1,0,0,1,0,0,1,0,0,1,1");
-	forms.put("BEEHIVE",				"4,3,0,1,1,0,1,0,0,1,0,1,1,0");
-	forms.put("BEACON",					"4,4,1,1,0,0,1,0,0,0,0,0,0,1,0,0,1,1");
-	forms.put("LOAF",					"4,4,0,1,1,0,1,0,0,1,0,1,0,1,0,0,1,0");
-	forms.put("LIGHTWEIGHT SPACESHIP",	"5,4,0,1,0,0,1,1,0,0,0,0,1,0,0,0,1,1,1,1,1,0");
-	forms.put("PULSAR","15,15,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,0,0,0,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,1,0,1,0,0,0,0,1,0,0,1,0,0,0,0,1,0,1,0,0,0,0,1,0,0,1,0,0,0,0,1,0,1,0,0,0,0,1,0,0,0,0,1,1,1,0,0,0,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,0,0,0,1,1,1,0,0,0,0,1,0,0,0,0,1,0,1,0,0,0,0,1,0,0,1,0,0,0,0,1,0,1,0,0,0,0,1,0,0,1,0,0,0,0,1,0,1,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,0,0,0,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0");
-	forms.put("LIDKA","9,15,0,1,0,0,0,0,0,0,0,1,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,1,0,1,0,0,0,0,0,1,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,0,0")
+	patterns.put("BLOCK",					"2,2,1,1,1,1");
+	patterns.put("GLIDER",					"3,3,0,0,1,1,0,1,0,1,1");
+	patterns.put("BLINKER",				"3,3,0,1,0,0,1,0,0,1,0");
+	patterns.put("R-PENTOMINO",			"3,3,0,1,1,1,1,0,0,1,0");
+	patterns.put("BOAT",					"3,3,1,1,0,1,0,1,0,1,0");
+	patterns.put("HERSCHEL",				"3,4,1,0,0,1,1,1,1,0,1,0,0,1");
+	patterns.put("TOAD",					"4,2,0,1,1,1,1,1,1,0");
+	patterns.put("AIRCRAFT CARRIER",		"4,3,1,1,0,0,1,0,0,1,0,0,1,1");
+	patterns.put("BEEHIVE",				"4,3,0,1,1,0,1,0,0,1,0,1,1,0");
+	patterns.put("BEACON",					"4,4,1,1,0,0,1,0,0,0,0,0,0,1,0,0,1,1");
+	patterns.put("LOAF",					"4,4,0,1,1,0,1,0,0,1,0,1,0,1,0,0,1,0");
+	patterns.put("LIGHTWEIGHT SPACESHIP",	"5,4,0,1,0,0,1,1,0,0,0,0,1,0,0,0,1,1,1,1,1,0");
+	patterns.put("PULSAR","15,15,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,0,0,0,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,1,0,1,0,0,0,0,1,0,0,1,0,0,0,0,1,0,1,0,0,0,0,1,0,0,1,0,0,0,0,1,0,1,0,0,0,0,1,0,0,0,0,1,1,1,0,0,0,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,0,0,0,1,1,1,0,0,0,0,1,0,0,0,0,1,0,1,0,0,0,0,1,0,0,1,0,0,0,0,1,0,1,0,0,0,0,1,0,0,1,0,0,0,0,1,0,1,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,0,0,0,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0");
+	patterns.put("LIDKA","9,15,0,1,0,0,0,0,0,0,0,1,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,1,0,1,0,0,0,0,0,1,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,0,0")
 }
 
 void draw()
@@ -96,7 +96,7 @@ void draw()
 
 void ifClear() // Function to clear the entire world.
 {
-	if(window.cclear)
+	if(window.cleargrid)
 	{
 		for (int x=0; x<board.gw; x++)
 		{
@@ -106,13 +106,14 @@ void ifClear() // Function to clear the entire world.
 				world[x][y][1] = 0;
 			}
 		}
-		window.cclear = false;
+		window.running = false; // Pause the simulation because
+		window.cleargrid = false;
 	}
 }
 
 void mouseDragged() // dragging the mouse is different than clicking. Requires mousePressed() for initial condition.
 {
-	if (mouseX > board.tx && mouseX < board.bx && mouseY < board.by && mouseY > board.ty && (window.cforms == "SINGLE CELL" || window.cforms == undefined))
+	if (mouseX > board.tx && mouseX < board.bx && mouseY < board.by && mouseY > board.ty && (window.patterns == "SINGLE CELL" || window.patterns == undefined))
 	{
 		PVector t = board.toGrid(mouseX, mouseY);
 		if (!kill)
@@ -142,20 +143,20 @@ void mousePressed() // Did the user press on a live or dead cell?
 	}
 }
 
-void mouseClicked() // Single cell birth or death, as well as placing forms.
+void mouseClicked() // Single cell birth or death, as well as placing patterns.
 {
 	if (mouseX > board.tx && mouseX < board.bx && mouseY < board.by && mouseY > board.ty)
 	{
 		PVector l = board.toGrid(mouseX, mouseY);
 		if (mouseButton == LEFT)
 		{
-			if(window.cforms == "SINGLE CELL" || window.cforms == undefined)
+			if(window.patterns == "SINGLE CELL" || window.patterns == undefined)
 			{
 				world[(int)l.x][(int)l.y][0] = (world[(int)l.x][(int)l.y][0]+1)%2;
 			}
 			else
 			{
-				placeForm(window.cforms, (int)l.x,(int)l.y);
+				placeForm(window.patterns, (int)l.x,(int)l.y);
 			}
 		}
 	}
@@ -268,7 +269,7 @@ class Grid
 
 void placeForm(String thisform, int mx, int my)
 {
-	String form = (String)forms.get(thisform);
+	String form = (String)patterns.get(thisform);
 	String[] df = split(form,',');
 	int[] intvals = int(split(form,','));
 	int dx = intvals[0];
