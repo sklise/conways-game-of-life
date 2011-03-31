@@ -63,7 +63,7 @@ a:hover, a:focus
 }
 input[type="button"]
 {
-	background: #09147c;
+	background: #0B3254;
 	background: -moz-linear-gradient(0% 100% 90deg,#0B3254, #145C9C, #2197FF 100%);
 	background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#2197FF), to(#0B3254), color-stop(.6,#145C9C));
 	-webkit-border-radius: 12px;
