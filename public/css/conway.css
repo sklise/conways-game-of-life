@@ -47,17 +47,17 @@ a:hover, a:focus
 	margin: 0 0 0 .5em;
 	padding: 0;
 }
-#colophon
+#colophon,#twitter
 {
 	float: right;
 	margin: .4em 1em;
 	text-align: right;
 }
-#colophon>a
+#colophon>a,#twitter>a
 {
 	color:#9f9f9f;
 }
-#colophon>a:hover
+#colophon>a:hover,#twitter>a:hover
 {
 	color: #0792e2;
 }
