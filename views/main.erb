@@ -4,39 +4,30 @@
 		<li><input id="conway_running" type="button" value="RUN"/></li>
 		<li><input id="conway_edges" type="button" value="EDGES ON"></li>
 		<li><input id="conway_clear" type="button" value="CLEAR GRID"/></li>
-		<li>PATTERNS:
-			<select name="conway_patterns">
-				<option>SINGLE CELL</option>
-				<optgroup label="Movers">
-					<option>GLIDER</option>
-					<option>LIGHTWEIGHT SPACESHIP</option>
-				</optgroup>
-				<optgroup label="Oscillators">
-					<option>BEACON</option>
-					<option>BLINKER</option>
-					<option>PULSAR</option>
-					<option>TOAD</option>
-				</optgroup>
-				<optgroup label="Methusalehs">
-					<option>R-PENTOMINO</option>
-					<option>HERSCHEL</option>
-					<option>LIDKA</option>
-				</optgroup>
-				<optgroup label="Still lives">
-					<option>AIRCRAFT CARRIER</option>
-					<option>BLOCK</option>
-					<option>BEEHIVE</option>
-					<option>BOAT</option>
-					<option>LOAF</option>
-				</optgroup>
-			</select>
-		</li>
-		<li><span  id="speedmeter">SPEED:<input name="conway_speed" type="range" min="1" max="60" step="1" value="12">  <span id="conway_speed"></span></span></li>
+		<li><input id="conway_pattern" type="button" value="PATTERNS" /></li>
+		<li><span id="speedmeter">SPEED:<input name="conway_speed" type="range" min="1" max="60" step="1" value="12">  <span id="conway_speed"></span></span></li>
 		<li id="debug"></li>
 	</ul>
 	<p id="twitter"><a href="http://twitter.com/stevenklise">@stevenklise</a></p>
 	<p id="colophon"><a href="/colophon">COLOPHON</a></p>
 	<div class="breaker">&nbsp;</div>
+</div>
+<div id="patternselect">
+	<ul>
+		<li></li>
+		<ul class="patternlist">
+			<li name="SINGLE CELL" class="pattern"><img src="http://conways.s3.amazonaws.com/single.png" /> Single Cell</li>
+		</ul>
+	<% @allcategories = Category.all %>
+	<% @allcategories.each do |category| %>
+		<li><%= category.name %></li>
+			<ul class="patternlist">
+				<% category.patterns.each do |pattern| %>
+					<li name="<%= pattern.name.upcase %>" class="pattern"><img src="http://conways.s3.amazonaws.com/<%= pattern.name.downcase %>.png"/><%= pattern.name %></li>
+				<% end %>
+			</ul>
+	<% end %>
+	</ul>
 </div>
 <script src="/js/processing-1.1.0.js"></script>
 <canvas datasrc="/js/conways.pjs"></canvas>

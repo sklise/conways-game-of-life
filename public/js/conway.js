@@ -60,8 +60,14 @@ $(document).ready(function(){
 		$('#conway_speed').html(window.speed);
 	});
 	
-	// Take select value and save in a global variable
-	$('select[name=conway_patterns]').change(function(){
-		window.patterns = $(this).val();
+	// Show the pattern select modal box.
+	$('input[id=conway_pattern]').click(function(){
+		$('#patternselect').toggle();
+	});
+	
+	// Take chosen pattern and save in a global variable
+	$('.pattern').click(function(){
+		$('#patternselect').fadeOut(200);
+		window.patterns = $(this).attr("name");
 	});
 });
