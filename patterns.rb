@@ -8,9 +8,16 @@ class Pattern
   property :width,    Integer
   property :height,   Integer
   property :cells,    String
-  property :image,    String
   
   belongs_to :category
+  
+  def handle_upload( file )
+    thefile = file[:tempfile]
+    filename = self.name.downcase+".png"
+    # Upload to amazon
+    AWS::S3::Base.establish_connection!(:access_key_id => "TK", :secret_access_key => "TK")
+    AWS::S3::S3Object.store(filename, open(thefile), "conways", :access => :public_read)
+  end
 end
 
 class Category
@@ -20,8 +27,5 @@ class Category
   property :name,         String
   property :description,  String
   
-  has n, :patterns, :required => false
+  has n, :patterns
 end
-
-# DataMapper.auto_upgrade!
-# DataMapper.auto_migrate!
