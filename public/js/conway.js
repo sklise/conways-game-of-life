@@ -1,17 +1,16 @@
 $(document).ready(function(){
     var name = 'steven';
     var domain = 'stevenklise.com';
-    $('.email_sk').html('<a href="mailto:'+name+'@'+domain+'">'+name+'@'+domain+'</a>');
+    $('.email-sk').html('<a href="mailto:'+name+'@'+domain+'">'+name+'@'+domain+'</a>');
 
 	// LI element for debugging.
 	$('#debug').append();
 	
 	$('body').append('<div id="ajax-status"></div>');
-	
 	app.init();
 	app.buttonHandlers();
 	app.selectCategory();
-	app.getPatternJSON();
+	//app.getPatternJSON();
 	app.setupAjaxCallbacks();
 	app.positionPatternSelect($(window).width(),$(window).height());
 });
@@ -59,8 +58,14 @@ var app = {
 				$(this).val('EDGES OFF');
 			}
 		});
+		/* SINGLE CELL*/
+		$('input[id=conway_single]').click(function() {
+			$(this).addClass('active-button');
+			$('#conway_pattern').removeClass('active-button');
+			window.patternName = "single";
+		});
 		/* PATTERN BOX */
-		$('input[id=conway_pattern]').click(function(){
+		$('input[id=conway_pattern]').click(function() {
 			$('#patternselect').toggle();
 		});
 		/* SPEED */
@@ -75,13 +80,18 @@ var app = {
 	selectCategory: function(){
 		$('.select-category').click(function() {
 			category = $(this).attr('href');
-			if($(this).hasClass('current')){
-				$(category+' .patternlist').html('');
+			if($(this).hasClass('current')) {
+				$(category+' .patternlist').hide();
 				$(this).removeClass('current');
 			}
+			else if($(category+' .patternlist').hasClass('loaded')) {
+				$(category+' .patternlist').show();
+				$(this).addClass('current');
+			}
 			else {
-				$.get('/category/'+category.substring(1), function(data){
+				$.get('/category/'+category.substring(1), function(data) {
 					$(category+' .patternlist').append(data);
+					$(category+' .patternlist').addClass('loaded');
 				});
 				$(this).addClass('current');
 			}
@@ -89,17 +99,19 @@ var app = {
 		});
 	},
 	/* SET VARIABLES WITH CHOSEN PATTERN */
-	getPatternJSON: function(){
+	getPatternJSON: function() {
 		// Take chosen pattern and save in a global variable
-		$('.pattern').click(function(){
-			$('#patternselect').fadeOut(200);
-			// alert();
-			$.getJSON('/pattern/'+$(this).attr('name'), function(data) {
+		$('.pattern').click(function() {
+			patternid = $(this).attr('href').substring(1);
+			$.getJSON('/pattern/'+patternid, function(data) {
 				window.patternName = data.name;
 				window.patternWidth = data.width;
 				window.patternHeight = data.height;
 				window.patternShape = data.shape;
+				$('#debug').text(window.patternName);
 			});
+			$('#patternselect').fadeOut(600);
+			return false;
 		});
 	},
 	/* POSITION MODAL */
@@ -119,11 +131,7 @@ var app = {
 		});
 		$('body').ajaxError(function(event, xhr, ajaxOptions, thrownError){
 			if(xhr.status === 401) {
-				if($("#login").is(":hidden")){
-					app.showLoginForm();
-				}
-				alert("Sorry, "+xhr.responseText.toLowerCase());
-				$("#login input[type='text']:first").focus();
+				$('#ajax-status').text("Sorry, "+xhr.responseText.toLowerCase()).fadeOut(1000);
 			}
 			console.log("XHR Response: "+JSON.stringify(xhr));
 		});

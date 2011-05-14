@@ -21,6 +21,13 @@ a:hover, a:focus
 	clear: both;
 	height:0;
 }
+/* CONTROL PANEL
+____________________________________________ */
+#ajax-status {
+	position: fixed;
+	right: 0;
+	bottom: 0;
+}
 #controlpanel
 {
 	background:#333333;
@@ -72,9 +79,15 @@ input[type="button"]
 	border: none;
 	color: #eee;
 	font-weight: bold;
-	padding: .5em .8em;
+	min-width: 6em;
+	padding: .5em 1em;
 	text-align: center;
 	text-shadow: 0 1px 1px rgba(0,0,0,.5);
+}
+input[type="button"].active-button {
+	background: #ED7B24;
+	background: -moz-linear-gradient(19% 75% 90deg,#A33C08, #ED7B24);
+	background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#ED7B24), to(#A33C08));
 }
 input[type="button"]:hover,
 input[type="button"]:focus
@@ -82,14 +95,6 @@ input[type="button"]:focus
 	-webkit-box-shadow: 0 0 4px rgba(255,255,255,.8);
 	-moz-box-shadow: 0 0 4px rgba(255,255,255,.8);
 	box-shadow: 0 0 4px rgba(255,255,255,.8);
-}
-#conway_running
-{
-	width: 6em;
-}
-#conway_edges
-{
-	width: 8em;
 }
 #controlpanel ul li
 {
@@ -120,6 +125,8 @@ canvas
 	margin: 0 0 .25em 0;
 }
 
+/* PATTERN SELECT MODAL
+____________________________________________ */
 #patternselect
 {
 	background: rgba(19,22,25,0.9);
@@ -128,6 +135,7 @@ canvas
 	border-radius: 12px;
 	-webkit-box-shadow: 0px 1px 10px rgba(255,255,255,.4);
 	border: 2px solid #888;
+	display: none;
 	padding: 1em;
 	position: absolute;
 	width: 400px;
@@ -146,7 +154,7 @@ canvas
 	clear: both;
 	font-size: 150%;
 }
-.patternlist
+/*.patternlist
 {
 	font-size: 13px;
 	margin: 0;
@@ -169,7 +177,7 @@ canvas
 	float: left;
 	padding: 0 4px 4px 0;
 	width: 32px;
-}
+}*/
 
 /* Category Page
 _____________________________ */

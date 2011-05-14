@@ -95,7 +95,7 @@ void ifClear() // Function to clear the entire world.
 
 void mouseDragged() // dragging the mouse is different than clicking. Requires mousePressed() for initial condition.
 {
-	if (mouseX > board.tx && mouseX < board.bx && mouseY < board.by && mouseY > board.ty && (window.patterns == "SINGLE CELL" || window.patterns == undefined))
+	if (mouseX > board.tx && mouseX < board.bx && mouseY < board.by && mouseY > board.ty && (window.patternName == "single" || window.patternName == undefined))
 	{
 		PVector t = board.toGrid(mouseX, mouseY);
 		if (!kill)
@@ -132,7 +132,7 @@ void mouseClicked() // Single cell birth or death, as well as placing patterns.
 		PVector l = board.toGrid(mouseX, mouseY); // Mouse location to grid position
 		if (mouseButton == LEFT) // Only on Left click
 		{
-			if(window.patterns == "SINGLE CELL" || window.patterns == undefined)
+			if(window.patternName == "single" || window.patternName == undefined)
 			{
 				world[(int)l.x][(int)l.y][0] = (world[(int)l.x][(int)l.y][0]+1)%2;
 			}
@@ -251,16 +251,15 @@ class Grid
 
 void placeForm(int mx, int my)
 {
-	String form = (String)patterns.get(thisform);
-	String[] df = split(form,',');
-	int[] intvals = int(split(form,','));
-	int dx = intvals[0];
-	int dy = intvals[1];
+	String form = window.patternName;
+	int[] intvals = int(split(window.patternShape,','));
+	int dx = window.patternWidth;
+	int dy = window.patternHeight;
 	for(int x = 0; x<dx; x++)
 	{
 		for(int y = 0; y<dy; y++)
 		{
-			world[mx+x][my+y][0] = intvals[2+x+dx*y];
+			world[mx+x][my+y][0] = intvals[x+dx*y];
 		}
 	}
 }
