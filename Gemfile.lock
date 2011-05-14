@@ -26,6 +26,7 @@ GEM
       data_objects (= 0.10.3)
     do_sqlite3 (0.10.3)
       data_objects (= 0.10.3)
+    json (1.5.1)
     mime-types (1.16)
     rack (1.2.2)
     sinatra (1.2.1)
@@ -44,4 +45,5 @@ DEPENDENCIES
   dm-postgres-adapter
   dm-sqlite-adapter
   do_postgres
+  json
   sinatra

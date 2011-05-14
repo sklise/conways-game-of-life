@@ -3,6 +3,7 @@ source :rubygems
 gem 'sinatra'
 gem 'dm-core'
 gem 'dm-migrations'
+gem 'json'
 gem 'aws-s3', :require => 'aws/s3'
 
 group :development do
