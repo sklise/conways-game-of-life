@@ -9,7 +9,7 @@ end
 
 get "/" do
   @allcategories = Category.all
-  erb :main
+  erb :construction
 end
 
 get "/category" do
@@ -35,7 +35,8 @@ get "/category/:c" do
 end
 
 get "/construction" do
-  erb :construction
+  require_admin
+  erb :main
 end
 
 get "/colophon" do
