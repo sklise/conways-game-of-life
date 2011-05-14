@@ -36,6 +36,7 @@ end
 
 get "/construction" do
   require_admin
+  @allcategories = Category.all
   erb :main
 end
 
