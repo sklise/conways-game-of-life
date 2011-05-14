@@ -17,31 +17,12 @@ Grid board;
 int[][][] world;
 boolean kill = false;
 
-HashMap patterns = new HashMap(20);
-
 void setup()
 {
 	size(window.sketchWidth, window.sketchHeight);
 	frameRate(window.speed);
 	board = new Grid(10, 10, width-10, height-3, 10);
-	window.running = false;
-
 	world = new int[board.gw][board.gh][2];
-	
-	patterns.put("BLOCK",					"2,2,1,1,1,1");
-	patterns.put("GLIDER",					"3,3,0,0,1,1,0,1,0,1,1");
-	patterns.put("BLINKER",				"3,3,0,1,0,0,1,0,0,1,0");
-	patterns.put("R-PENTOMINO",			"3,3,0,1,1,1,1,0,0,1,0");
-	patterns.put("BOAT",					"3,3,1,1,0,1,0,1,0,1,0");
-	patterns.put("HERSCHEL",				"3,4,1,0,0,1,1,1,1,0,1,0,0,1");
-	patterns.put("TOAD",					"4,2,0,1,1,1,1,1,1,0");
-	patterns.put("AIRCRAFT CARRIER",		"4,3,1,1,0,0,1,0,0,1,0,0,1,1");
-	patterns.put("BEEHIVE",				"4,3,0,1,1,0,1,0,0,1,0,1,1,0");
-	patterns.put("BEACON",					"4,4,1,1,0,0,1,0,0,0,0,0,0,1,0,0,1,1");
-	patterns.put("LOAF",					"4,4,0,1,1,0,1,0,0,1,0,1,0,1,0,0,1,0");
-	patterns.put("LIGHTWEIGHT SPACESHIP",	"5,4,0,1,0,0,1,1,0,0,0,0,1,0,0,0,1,1,1,1,1,0");
-	patterns.put("PULSAR","15,15,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,0,0,0,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,1,0,1,0,0,0,0,1,0,0,1,0,0,0,0,1,0,1,0,0,0,0,1,0,0,1,0,0,0,0,1,0,1,0,0,0,0,1,0,0,0,0,1,1,1,0,0,0,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,0,0,0,1,1,1,0,0,0,0,1,0,0,0,0,1,0,1,0,0,0,0,1,0,0,1,0,0,0,0,1,0,1,0,0,0,0,1,0,0,1,0,0,0,0,1,0,1,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,0,0,0,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0");
-	patterns.put("LIDKA","9,15,0,1,0,0,0,0,0,0,0,1,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,1,0,1,0,0,0,0,0,1,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,0,0")
 }
 
 void draw()
@@ -146,10 +127,10 @@ void mousePressed() // Did the user press on a live or dead cell?
 
 void mouseClicked() // Single cell birth or death, as well as placing patterns.
 {
-	if (mouseX > board.tx && mouseX < board.bx && mouseY < board.by && mouseY > board.ty)
+	if (mouseX > board.tx && mouseX < board.bx && mouseY < board.by && mouseY > board.ty) // Check bounds of grid
 	{
-		PVector l = board.toGrid(mouseX, mouseY);
-		if (mouseButton == LEFT)
+		PVector l = board.toGrid(mouseX, mouseY); // Mouse location to grid position
+		if (mouseButton == LEFT) // Only on Left click
 		{
 			if(window.patterns == "SINGLE CELL" || window.patterns == undefined)
 			{
@@ -157,7 +138,7 @@ void mouseClicked() // Single cell birth or death, as well as placing patterns.
 			}
 			else
 			{
-				placeForm(window.patterns, (int)l.x,(int)l.y);
+				placeForm((int)l.x,(int)l.y);
 			}
 		}
 	}
@@ -268,7 +249,7 @@ class Grid
 	}
 }
 
-void placeForm(String thisform, int mx, int my)
+void placeForm(int mx, int my)
 {
 	String form = (String)patterns.get(thisform);
 	String[] df = split(form,',');

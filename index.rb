@@ -8,6 +8,7 @@ helpers do
 end
 
 get "/" do
+  @allcategories = Category.all
   erb :main
 end
 
@@ -15,7 +16,13 @@ get "/colophon" do
   erb :colophon
 end
 
-post "/pattern" do
+get "/pattern/new" do
+  require_admin
+  @categories = Category.all
+  erb :newpattern
+end
+
+post "/pattern/new" do
   require_admin
   # params = { :name => GLIDER, :width => 3, :height => 3, :category => MOVER}
   category = Category.first(:name => params[:category])
@@ -23,17 +30,26 @@ post "/pattern" do
   pattern.handle_upload(params[:image])
   pattern.save
   category.save
+  redirect "/category"
 end
 
-get "/pattern" do
-  require_admin
-  @categories = Category.all
-  erb :newpattern
+get "/pattern/:id" do
+  content_type :json
+  @pattern = Pattern.get(params[:id])
+  pattern_json = {:name => @pattern.name, :width => @pattern.width.to_i, :height => @pattern.height.to_i, :shape => @pattern.cells}.to_json
+  pattern_json
 end
 
 get "/category" do
   @allcategories = Category.all
-  erb :categories
+  erb :allcategories
+end
+
+post "/category" do
+  require_admin
+  @category = Category.create(params)
+  @allcategories = Category.all
+  erb :allcategories
 end
 
 get "/category/new" do
@@ -41,9 +57,7 @@ get "/category/new" do
   erb :newcategory
 end
 
-post "/category" do
-  require_admin
-  @category = Category.create(params)
-  @allcategories = Category.all
-  erb :categories
+get "/category/:c" do
+  @category = Category.first(:name => params[:c])
+  erb :onecategory, :layout => false
 end

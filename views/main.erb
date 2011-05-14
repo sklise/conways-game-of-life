@@ -12,22 +12,13 @@
 	<p id="colophon"><a href="/colophon">COLOPHON</a></p>
 	<div class="breaker">&nbsp;</div>
 </div>
+
 <div id="patternselect">
-	<ul>
-		<li></li>
-		<ul class="patternlist">
-			<li name="SINGLE CELL" class="pattern"><img src="http://conways.s3.amazonaws.com/single.png" /> Single Cell</li>
-		</ul>
-	<% @allcategories = Category.all %>
+	<h2>Categories</h2>
 	<% @allcategories.each do |category| %>
-		<li><%= category.name %></li>
-			<ul class="patternlist">
-				<% category.patterns.each do |pattern| %>
-					<li name="<%= pattern.name.upcase %>" class="pattern"><img src="http://conways.s3.amazonaws.com/<%= pattern.name.downcase %>.png"/><%= pattern.name %></li>
-				<% end %>
-			</ul>
+	<div id="<%= category.name %>"><a href="#<%= category.name %>" class="select-category"><%= category.name.capitalize %></a><div class="patternlist"></div></div>
 	<% end %>
-	</ul>
 </div>
+
 <script src="/js/processing-1.1.0.js"></script>
 <canvas datasrc="/js/conways.pjs"></canvas>

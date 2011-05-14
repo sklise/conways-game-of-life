@@ -1,0 +1,5 @@
+<ul>
+<% @category.patterns.each do |pattern| %>
+	<li name="<%= pattern.id %>" class="pattern"><img src="http://conways.s3.amazonaws.com/<%= pattern.name.downcase %>.png"/><%= pattern.name.capitalize %></li>
+<% end %>
+</ul>
