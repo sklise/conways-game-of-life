@@ -15,7 +15,7 @@ class Pattern
     thefile = file[:tempfile]
     filename = self.name.downcase+".png"
     # Upload to amazon
-    AWS::S3::Base.establish_connection!(:access_key_id => "TK", :secret_access_key => "TK")
+    AWS::S3::Base.establish_connection!(:access_key_id => "AKIAJDCZ3DW6AZVOP62A", :secret_access_key => "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")
     AWS::S3::S3Object.store(filename, open(thefile), "conways", :access => :public_read)
   end
 end
