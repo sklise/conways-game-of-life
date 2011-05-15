@@ -7,7 +7,7 @@ $(document).ready(function(){
 			window.patternWidth = data.width;
 			window.patternHeight = data.height;
 			window.patternShape = data.shape;
-			$('#debug').text(window.patternName);
+			app.controlPanelPNG();
 		});
 		$('#patternselect').fadeOut(600);
 		$('#conway_pattern').addClass('active-button');
@@ -18,5 +18,8 @@ $(document).ready(function(){
 </script>
 
 <% @category.patterns.each do |pattern| %>
-	<a href="#<%= pattern.id %>" class="pattern"><img src="http://conways.s3.amazonaws.com/<%= pattern.name.downcase %>.png"/><%= pattern.name.capitalize %></a>
+	<a href="#<%= pattern.id %>" class="pattern">
+		<img src="http://conways.s3.amazonaws.com/<%= pattern.name.downcase %>.png"/>
+		<%= pattern.name.capitalize %>
+	</a>
 <% end %>

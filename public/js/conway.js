@@ -63,6 +63,7 @@ var app = {
 			$(this).addClass('active-button');
 			$('#conway_pattern').removeClass('active-button');
 			window.patternName = "single";
+			app.controlPanelPNG();
 		});
 		/* PATTERN BOX */
 		$('input[id=conway_pattern]').click(function() {
@@ -75,6 +76,10 @@ var app = {
 			window.speed = $(this).val();
 			$('#conway_speed').html(window.speed);
 		});
+	},
+	controlPanelPNG: function(){
+		$('#conway_currentpng').html('<img src="http://conways.s3.amazonaws.com/'+window.patternName.toLowerCase()+'.png"/>');
+		return false;
 	},
 	/* SELECT A CATEGORY, RETRIEVE PATTERN LIST */
 	selectCategory: function(){

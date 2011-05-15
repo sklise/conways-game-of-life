@@ -16,6 +16,11 @@ a:hover, a:focus
 {
 	color: #f0ff08;
 }
+h2 {
+	margin: .25em 0 .75em 0;
+}
+h3 {
+}
 .breaker
 {
 	clear: both;
@@ -104,6 +109,10 @@ input[type="button"]:focus
 	padding: .2em;
 	text-align: center;
 }
+#conway_currentpng img{
+	max-height: 24px;
+}
+
 canvas
 {
 	margin: 0 auto;
@@ -135,50 +144,53 @@ ____________________________________________ */
 	border-radius: 12px;
 	-webkit-box-shadow: 0px 1px 10px rgba(255,255,255,.4);
 	border: 2px solid #888;
-	display: none;
+/*	display: none;*/
 	padding: 1em;
 	position: absolute;
 	width: 400px;
 }
-#patternselect>ul
-{
-	margin: 0;
-	padding: .5em;
+.category-wrapper {
+	border-bottom: 1px solid rgba(255,255,255,0.4);
 }
-#patternselect ul li
-{
-	list-style: none;
+a.select-category {
+	display: block;
+	font-size: 1.3em;
+	padding: .2em 0 .4em 0;
+	text-decoration: none;
+	text-transform: uppercase;
+	width: 100%;
 }
-#patternselect>ul>li
-{
-	clear: both;
-	font-size: 150%;
+.patternlist {
+	-moz-column-count: 2;
+	-moz-column-gap: 20px;
+	-webkit-column-count: 2;
+	-webkit-column-gap: 20px;
+	column-count: 2;
+	column-gap: 20px;
+	margin: .5em 0;
 }
-/*.patternlist
-{
-	font-size: 13px;
-	margin: 0;
-	padding: 0;
+a.pattern {
+	color: #ffffff;
+	display: block;
+	font-size: 1.2em;
+	height: 32px;
+	margin: .2em 0;
+	padding: .4em .4em .5em .4em;
+	position: relative;
+	text-decoration: none;
 }
-.patternlist li
-{
-	cursor: pointer;
+a.pattern:hover {
+	background: #ED7B24;
+	-webkit-border-radius: .7em;
+	-moz-border-radius: .7em;
+	border-radius: .7em;
+}
+a.pattern img {
 	float: left;
-	margin: 5px;
-	padding: 5px;
-	width: 170px;
+	margin: 4px;
+	max-height: 28px;
+	max-width: 28px;
 }
-.patternlist li:hover
-{
-	background: #0792e2;
-}
-.patternlist img
-{
-	float: left;
-	padding: 0 4px 4px 0;
-	width: 32px;
-}*/
-
 /* Category Page
 _____________________________ */
 
