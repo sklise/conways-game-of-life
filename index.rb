@@ -9,7 +9,7 @@ end
 
 get "/" do
   @allcategories = Category.all
-  erb :construction
+  erb :main
 end
 
 get "/category" do
@@ -37,7 +37,7 @@ end
 get "/construction" do
   require_admin
   @allcategories = Category.all
-  erb :main
+  erb :construction
 end
 
 get "/colophon" do
