@@ -1,11 +1,6 @@
 require 'bundler'
 Bundler.require
-require 'patterns'
-require 'lib/authorization'
-
-helpers do
-  include Sinatra::Authorization
-end
+require 'models'
 
 get "/" do
   @allcategories = Category.all
@@ -18,14 +13,12 @@ get "/category" do
 end
 
 post "/category" do
-  require_admin
   @category = Category.create(params)
   @allcategories = Category.all
   erb :allcategories
 end
 
 get "/category/new" do
-  require_admin
   erb :newcategory
 end
 
@@ -35,7 +28,6 @@ get "/category/:c" do
 end
 
 get "/construction" do
-  require_admin
   @allcategories = Category.all
   erb :construction
 end
@@ -45,16 +37,13 @@ get "/colophon" do
 end
 
 get "/pattern/new" do
-  require_admin
   @categories = Category.all
   erb :newpattern
 end
 
 post "/pattern/new" do
-  require_admin
   category = Category.first(:name => params[:category])
   pattern = category.patterns.create :name => params[:name], :width => params[:width], :height => params[:height], :cells => params[:cells], :category => category
-  pattern.handle_upload(params[:image])
   pattern.save
   category.save
   redirect "/category"
