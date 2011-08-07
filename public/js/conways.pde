@@ -10,7 +10,7 @@ boolean kill = false;
 void setup()
 {
   size(window.sketchWidth, window.sketchHeight);
-  frameRate(window.speed);
+  frameRate(12);
   board = new Grid(10, 10, width-10, height-3, 10);
   world = new int[board.gw][board.gh][2];
 }
@@ -19,7 +19,7 @@ void draw()
 {
   background(0);
   board.render();
-  frameRate(window.speed);
+  frameRate(12);
   for (int x=0; x<board.gw; x++) // draw and update.
   {
     for (int y=0; y<board.gh; y++)

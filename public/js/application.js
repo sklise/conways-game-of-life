@@ -69,13 +69,6 @@ var app = {
         $('input[id=conway_pattern]').click(function() {
             $('#patternselect').toggle();
         });
-        /* SPEED */
-        window.speed = $('input[name=conway_speed]').val();
-        $('#conway_speed').html(window.speed);
-        $('input[name=conway_speed]').mousemove(function(){
-            window.speed = $(this).val();
-            $('#conway_speed').html(window.speed);
-        });
     },
     controlPanelPNG: function(){
         $('#conway_currentpng').html('<img src="http://conways.s3.amazonaws.com/'+window.patternName.toLowerCase()+'.png"/>');
