@@ -83,14 +83,14 @@ var app = {
     },
     /* SELECT A CATEGORY, RETRIEVE PATTERN LIST */
     selectCategory: function(){
-        $('.select-category').click(function() {
+        $('#categories a').click(function() {
             category = $(this).attr('href');
             if($(this).hasClass('current')) {
-                $(category+' .patternlist').hide();
+                $(category+'-patterns').hide();
                 $(this).removeClass('current');
             }
             else if($(category+' .patternlist').hasClass('loaded')) {
-                $(category+' .patternlist').show();
+                $(category+'-patterns').show();
                 $(this).addClass('current');
             }
             else {
