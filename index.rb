@@ -42,10 +42,8 @@ get "/pattern/new" do
 end
 
 post "/pattern/new" do
-  raise params.inspect
   category = Category.first(:name => params[:category])
-  pattern = category.patterns.create(:name => params[:name], :width => params[:width], :height => params[:height], :cells => params[:cells], :category => category)
-  pattern.save
+  pattern = category.patterns.create(:name => params[:name], :width => params[:width], :height => params[:height], :cells => params[:cells], :category_id => category)
   category.save
   redirect "/category"
 end

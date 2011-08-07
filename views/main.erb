@@ -6,23 +6,27 @@
     <li><input id="conway_clear" type="button" value="CLEAR GRID"/></li>
     <li><input id="conway_single" type="button" class="active-button" value="SINGLE CELL"/></li>
     <li><input id="conway_pattern" type="button" value="PATTERNS" /></li>
-    <li><span id="speedmeter">SPEED:<input name="conway_speed" type="range" min="1" max="40" step="1" value="12">  <span id="conway_speed"></span></span></li>
     <li><span id="conway_currentpng"></span></li>
     <li id="debug"></li>
   </ul>
-  <p id="twitter"><a href="http://twitter.com/stevenklise">@stevenklise</a></p>
-  <p id="colophon"><a href="/colophon">COLOPHON</a></p>
-  <div class="breaker">&nbsp;</div>
 </div>
 
 <div id="patternselect">
   <h2>Categories</h2>
-  <% @allcategories.each do |category| %>
-  <div class="category-wrapper" id="<%= category.name %>">
-    <a href="#<%= category.name %>" class="select-category"><%= category.name.capitalize %></a>
-    <div class="patternlist"></div>
-  </div>
-  <% end %>
+  <ul id="categories">
+    <% @allcategories.each do |category| %>
+    <li id="<%= category.name %>">
+      <a href="#<%= category.name %>"><%= category.name.capitalize %><span class="down-arrow">▾</span></a>
+      <ul id="<%= category.name %>-patterns" class="pattern-list">
+        <% category.patterns.each do |pattern| %>
+        <li>
+          <%= pattern.draw %> <%= pattern.name %>
+        </li>
+        <% end %>
+      </ul>
+    </li>
+    <% end %>
+  </ul>
 </div>
 
 <script src="/js/processing-1.2.3.min.js"></script>
