@@ -12,24 +12,19 @@ get "/category" do
   erb :allcategories
 end
 
-post "/category" do
+get "/category/create" do
+  erb :newcategory
+end
+
+post "/category/new" do
   @category = Category.create(params)
   @allcategories = Category.all
   erb :allcategories
 end
 
-get "/category/new" do
-  erb :newcategory
-end
-
 get "/category/:category_name" do
   @category = Category.first(:name => params[:category_name])
   erb :onecategory, :layout => false
-end
-
-get "/construction" do
-  @allcategories = Category.all
-  erb :construction
 end
 
 get "/colophon" do
@@ -43,7 +38,8 @@ end
 
 post "/pattern/new" do
   category = Category.first(:name => params[:category])
-  pattern = category.patterns.create(:name => params[:name], :width => params[:width], :height => params[:height], :cells => params[:cells], :category_id => category)
+  pattern = category.patterns.create(:name => params[:name].lowercase, :width => params[:width], :height => params[:height], :cells => params[:cells], :category_id => category)
+  pattern.save
   category.save
   redirect "/category"
 end
@@ -51,25 +47,6 @@ end
 get "/pattern/:id" do
   content_type :json
   @pattern = Pattern.get(params[:id])
-  pattern_json = {:name => @pattern.name, :width => @pattern.width.to_i, :height => @pattern.height.to_i, :shape => @pattern.cells}.to_json
+  pattern_json = {:name => @pattern.name, :width => @pattern.width.to_i, :height => @pattern.height.to_i, :shape => @pattern.cells, :draw => @pattern.draw}.to_json
   pattern_json
-end
-
-get "/seed" do
-  erb :seed
-end
-
-post "/seed" do
-  categories = [
-    {:name => "Oscillators", :description => "Stable forms that cycle through a finite set of states."},
-    {:name => "Still Lifes", :description => "Stable forms that are static."},
-    {:name => "Methuslahs", :description => "Stable forms that are static."},
-    {:name => "Movers", :description => "Forms that move in a repeating pattern through the grid."}
-  ]
-  categories.each do |category|
-    newModel = Category.new(category)
-    newModel.save
-  end
-  
-  "watch it now"
 end
