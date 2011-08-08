@@ -19,9 +19,16 @@ for his help with Sinatra.
 
 #### TODO
 - Seed file for database.
+<<<<<<< Updated upstream
 - Set up Warden for authentication
 - Improve edge behavior
 - Infinite canvas?
 - New JS object to store data client side
 - Only make AJAX request if data is not currently stored on client
 - Cookies! <- Including board state.
+=======
+- Previews of patterns in javascript
+- Set up Warden for authentication
+- Improve edge behavior
+- Infinite canvas?
+>>>>>>> Stashed changes
