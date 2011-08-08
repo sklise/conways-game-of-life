@@ -1,16 +1,17 @@
 $(document).ready(function(){
+    // Email address insertion.
     var name = 'steven';
     var domain = 'stevenklise.com';
     $('.email-sk').html('<a href="mailto:'+name+'@'+domain+'">'+name+'@'+domain+'</a>');
 
     // LI element for debugging.
-    $('#debug').append();
+    // $('#debug').append();
     
     $('body').append('<div id="ajax-status"></div>');
     app.init();
     app.buttonHandlers();
     app.selectCategory();
-    //app.getPatternJSON();
+    app.getPatternJSON();
     app.setupAjaxCallbacks();
     app.positionPatternSelect($(window).width(),$(window).height());
 });
@@ -63,50 +64,36 @@ var app = {
             $(this).addClass('active-button');
             $('#conway_pattern').removeClass('active-button');
             window.patternName = "single";
-            app.controlPanelPNG();
+            $('#selected-pattern').html('Single Cell');
         });
         /* PATTERN BOX */
         $('input[id=conway_pattern]').click(function() {
             $('#patternselect').toggle();
         });
     },
-    controlPanelPNG: function(){
-        $('#conway_currentpng').html('<img src="http://conways.s3.amazonaws.com/'+window.patternName.toLowerCase()+'.png"/>');
+    currentPattern: function(){
+        $('#conway_pattern').addClass('active-button');
+        $('#conway_single').removeClass('active-button');
+        $('#selected-pattern').html(window.patternDraw + ' ' + window.patternName);
         return false;
     },
     /* SELECT A CATEGORY, RETRIEVE PATTERN LIST */
     selectCategory: function(){
-        $('#categories a').click(function() {
-            category = $(this).attr('href');
-            if($(this).hasClass('current')) {
-                $(category+'-patterns').hide();
-                $(this).removeClass('current');
-            }
-            else if($(category+' .patternlist').hasClass('loaded')) {
-                $(category+'-patterns').show();
-                $(this).addClass('current');
-            }
-            else {
-                $.get('/category/'+category.substring(1), function(data) {
-                    $(category+' .patternlist').append(data);
-                    $(category+' .patternlist').addClass('loaded');
-                });
-                $(this).addClass('current');
-            }
-            return false;
-        });
     },
     /* SET VARIABLES WITH CHOSEN PATTERN */
     getPatternJSON: function() {
         // Take chosen pattern and save in a global variable
         $('.pattern').click(function() {
-            patternid = $(this).attr('href').substring(1);
+            patternid = $(this).attr('id').split('-')[1];
+            console.log(patternid);
+            
             $.getJSON('/pattern/'+patternid, function(data) {
                 window.patternName = data.name;
                 window.patternWidth = data.width;
                 window.patternHeight = data.height;
                 window.patternShape = data.shape;
-                $('#debug').text(window.patternName);
+                window.patternDraw = data.draw;
+                app.currentPattern();
             });
             $('#patternselect').fadeOut(600);
             return false;

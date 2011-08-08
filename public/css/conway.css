@@ -17,7 +17,7 @@ a, a:visited {
     color: #0792e2;
 }
 a:hover, a:focus {
-    color: #f0ff08;
+    color: rgb(0, 0, 0);
 }
 h1, h2, h3, h4, h5, h6 {
     font-family: 'Lucida Grande', 'Helvetica', sans-serif;
@@ -91,6 +91,12 @@ ____________________________________________ */
     margin: 0 .2em;
     padding: .2em;
     text-align: center;
+}
+
+.twitter-handle {
+    float: right;
+    padding: 0;
+    margin: 0;
 }
 
 input[type="button"] {

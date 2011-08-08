@@ -6,9 +6,10 @@
     <li><input id="conway_clear" type="button" value="CLEAR GRID"/></li>
     <li><input id="conway_single" type="button" class="active-button" value="SINGLE CELL"/></li>
     <li><input id="conway_pattern" type="button" value="PATTERNS" /></li>
-    <li><span id="conway_currentpng"></span></li>
+    <li><span id="selected-pattern"></span></li>
     <li id="debug"></li>
   </ul>
+  <p class="twitter-handle"><a href="http://twitter.com/stevenklise">@stevenklise</a></p>
 </div>
 
 <div id="patternselect">
@@ -19,7 +20,7 @@
       <a href="#<%= category.name %>"><%= category.name.capitalize %><span class="down-arrow">▾</span></a>
       <ul id="<%= category.name %>-patterns" class="pattern-list">
         <% category.patterns.each do |pattern| %>
-        <li>
+        <li class="pattern" id="<%= category.name %>-<%= pattern.id %>">
           <%= pattern.draw %> <%= pattern.name %>
         </li>
         <% end %>
