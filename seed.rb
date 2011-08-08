@@ -1,9 +1,9 @@
 def seed
   categories = [
-    {:name => "oscillators", :description => "Stable forms that cycle through a finite set of states."},
+    {:name => "oscillators", :description => "Stable forms that cycle finite states."},
     {:name => "still_lifes", :description => "Stable forms that are static."},
     {:name => "methuslahs", :description => "Stable forms that are static."},
-    {:name => "movers", :description => "Forms that move in a repeating pattern through the grid."}
+    {:name => "movers", :description => "Forms that move through the grid."}
   ]
 
   oscillators = [
@@ -33,25 +33,25 @@ def seed
   mov = Category.first(:name => "movers")
   
   oscillators.each do |pattern|
-    newPattern = osc.patterns.create(pattern)
+    newPattern = Pattern.create(pattern)
     newPattern.category_id = osc.id
     newPattern.save
   end
   
   still_lifes.each do |pattern|
-    newPattern = sti.patterns.create(pattern)
+    newPattern = Pattern.create(pattern)
     newPattern.category_id = sti.id
     newPattern.save
   end
   
   methuselahs.each do |pattern|
-    newPattern = met.patterns.create(pattern)
+    newPattern = Pattern.create(pattern)
     newPattern.category_id = met.id
     newPattern.save
   end
   
   movers.each do |pattern|
-    newPattern = mov.patterns.create(pattern)
+    newPattern = Pattern.create(pattern)
     newPattern.category_id = mov.id
     newPattern.save
   end
