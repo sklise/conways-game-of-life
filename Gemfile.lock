@@ -36,6 +36,5 @@ DEPENDENCIES
   dm-migrations
   dm-postgres-adapter
   dm-sqlite-adapter
-  do_postgres
   json
   sinatra
