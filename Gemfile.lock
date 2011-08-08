@@ -27,7 +27,6 @@ GEM
       rack (~> 1.1)
       tilt (< 2.0, >= 1.2.2)
     tilt (1.2.2)
-    xml-simple (1.0.15)
 
 PLATFORMS
   ruby
