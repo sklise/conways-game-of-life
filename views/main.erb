@@ -22,7 +22,7 @@
       <ul id="<%= category.name %>-patterns" class="pattern-list">
         <% category.patterns.each do |pattern| %>
         <li class="pattern" id="<%= category.name %>-<%= pattern.id %>">
-          <%= pattern.draw %> <%= pattern.name %>
+          <%= pattern.name %>
         </li>
         <% end %>
       </ul>

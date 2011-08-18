@@ -11,20 +11,6 @@ class Pattern
   property :cells,    String
   
   belongs_to :category
-  
-  def draw
-    output = "<div class='width-#{self.width} height-#{self.height} pattern-drawing'>"
-    @cells = self.cells.split(',')
-    @cells.each do |cell|
-      if(cell == "1")
-        output += "<div class='on'></div>"
-      else
-        output += "<div class='off'></div>"
-      end
-    end
-    output += "</div>"
-    output
-  end
 end
 
 class Category
