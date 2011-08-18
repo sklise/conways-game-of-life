@@ -8,25 +8,108 @@ $(document).ready(function(){
     // $('#debug').append();
     
     $('body').append('<div id="ajax-status"></div>');
-    app.init();
-    app.buttonHandlers();
-    app.selectCategory();
-    app.getPatternJSON();
-    app.setupAjaxCallbacks();
-    app.positionPatternSelect($(window).width(),$(window).height());
+    App.init();
+    App.buttonHandlers();
+    App.selectCategory();
+    Pattern.getJSON();
+    App.setupAjaxCallbacks();
+    App.positionPatternSelect($(window).width(),$(window).height());
+    Pattern.draw();
+    
+    $('#pattern-rotate').click(function(){
+        if(Pattern.shape.length >= 1){
+            Pattern.rotate();
+            self.currentPattern();
+        }
+    });
 });
 
-var app = {
+Pattern = {
+    width: 1,
+    height: 1,
+    shape: "1",
+
+    currentPattern: function(){
+        self = this;
+        $('#conway_pattern').addClass('active-button');
+        $('#conway_single').removeClass('active-button');
+        $('#selected-pattern').html(self.draw() + ' ' + self.name);
+        $('#selected-pattern .pattern-drawing').css({
+            width: function(){
+                console.log(Pattern.width*8)
+                return Pattern.width*8+1;
+            },
+            height: function(){
+                return Pattern.height*8+1;
+            }
+        });
+        return false;
+    },
+
+    draw: function(){
+        self = this;
+        output = '';
+        output += '<div class="pattern-drawing">';
+        shape = self.shape.split(',');
+        for(var i=0; i<shape.length; i++){
+            var state = 'off';
+            if(shape[i] == '1'){
+                state = 'on';
+            }
+            output += '<div class="'+state+'"></div>';
+        }
+        output += '</div>';
+        return output;
+    },
+
+    getJSON: function() {
+        self = this;
+        // Take chosen pattern and save in a global variable
+        $('.pattern').click(function() {
+            patternid = $(this).attr('id').split('-')[1];
+            
+            $.getJSON('/pattern/'+patternid, function(data) {
+                self.name = data.name;
+                self.width = data.width;
+                self.height = data.height;
+                self.shape = data.shape;
+                self.currentPattern();
+            });
+            $('#patternselect').fadeOut(600);
+            return false;
+        });
+    },
+
+    rotate: function(){
+        self = this;
+        var pattern = self.shape.split(',');
+        var isSquare = (self.width == self.height) ? true : false;
+        var rotatedPattern = [];
+        for(var i=0; i<self.height; i++){
+            for(var j=0; j<self.height; j++){
+                var i1 = self.height-j-1;
+                var j1 = i;
+                rotatedPattern[self.height*i1+j1] = pattern[self.height*i+j];
+            }
+        }
+        self.shape = rotatedPattern.join(',');
+    },
+}
+
+App = {
+    height: 600,
+    width: 600,
     init: function(){
+        self = this;
         // Initialize a few variables.
         window.edges = true;
         window.running = false;
 
         // Sketch Size
         var cpheight = $('#controlpanel').height();
-        window.sketchWidth = $(window).width()-20;
-        window.sketchHeight = $(window).height()-cpheight-15;
-        $('canvas').css('width',window.sketchWidth+'px').css('height',window.sketchHeight+'px');
+        self.width = $(window).width()-20;
+        self.height = $(window).height()-cpheight-15;
+        $('canvas').css('width',App.width+'px').css('height',App.height+'px');
         $('#info').css('height',$(window).height());
         // stretch control panel to full width.
         $('#controlpanel').css('width',$(window).width()+'px');
@@ -63,7 +146,7 @@ var app = {
         $('input[id=conway_single]').click(function() {
             $(this).addClass('active-button');
             $('#conway_pattern').removeClass('active-button');
-            window.patternName = "single";
+            Pattern.name = "single";
             $('#selected-pattern').html('Single Cell');
         });
         /* PATTERN BOX */
@@ -71,33 +154,8 @@ var app = {
             $('#patternselect').toggle();
         });
     },
-    currentPattern: function(){
-        $('#conway_pattern').addClass('active-button');
-        $('#conway_single').removeClass('active-button');
-        $('#selected-pattern').html(window.patternDraw + ' ' + window.patternName);
-        return false;
-    },
     /* SELECT A CATEGORY, RETRIEVE PATTERN LIST */
     selectCategory: function(){
-    },
-    /* SET VARIABLES WITH CHOSEN PATTERN */
-    getPatternJSON: function() {
-        // Take chosen pattern and save in a global variable
-        $('.pattern').click(function() {
-            patternid = $(this).attr('id').split('-')[1];
-            console.log(patternid);
-            
-            $.getJSON('/pattern/'+patternid, function(data) {
-                window.patternName = data.name;
-                window.patternWidth = data.width;
-                window.patternHeight = data.height;
-                window.patternShape = data.shape;
-                window.patternDraw = data.draw;
-                app.currentPattern();
-            });
-            $('#patternselect').fadeOut(600);
-            return false;
-        });
     },
     /* POSITION MODAL */
     positionPatternSelect: function(w,h){
@@ -107,6 +165,7 @@ var app = {
             'top': '150px'
         });
     },
+
     setupAjaxCallbacks: function(){
         $('body').ajaxStart(function(){
             $('#ajax-status').show().text("Loading...");

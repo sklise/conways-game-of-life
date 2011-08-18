@@ -1,22 +1,3 @@
-<script>
-$(document).ready(function(){
-  $('.pattern').click(function() {
-    patternid = $(this).attr('href').substring(1);
-    $.getJSON('/pattern/'+patternid, function(data) {
-      window.patternName = data.name;
-      window.patternWidth = data.width;
-      window.patternHeight = data.height;
-      window.patternShape = data.shape;
-      app.controlPanelPNG();
-    });
-    $('#patternselect').fadeOut(600);
-    $('#conway_pattern').addClass('active-button');
-    $('#conway_single').removeClass('active-button');
-    return false;
-  });
-});
-</script>
-
 <% @category.patterns.each do |pattern| %>
   <a href="#<%= pattern.id %>" class="pattern">
     <img src="http://conways.s3.amazonaws.com/<%= pattern.name.downcase %>.png"/>

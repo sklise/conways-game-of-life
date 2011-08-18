@@ -3,13 +3,12 @@
 // 2011
 
 Grid board;
-//boolean running;
 int[][][] world;
 boolean kill = false;
 
 void setup()
 {
-  size(window.sketchWidth, window.sketchHeight);
+  size(App.width, App.height);
   frameRate(12);
   board = new Grid(10, 10, width-10, height-3, 10);
   world = new int[board.gw][board.gh][2];
@@ -85,7 +84,7 @@ void ifClear() // Function to clear the entire world.
 
 void mouseDragged() // dragging the mouse is different than clicking. Requires mousePressed() for initial condition.
 {
-  if (mouseX > board.tx && mouseX < board.bx && mouseY < board.by && mouseY > board.ty && (window.patternName == "single" || window.patternName == undefined))
+  if (mouseX > board.tx && mouseX < board.bx && mouseY < board.by && mouseY > board.ty && (Pattern.name == "single" || Pattern.name == undefined))
   {
     PVector t = board.toGrid(mouseX, mouseY);
     if (!kill)
@@ -122,7 +121,7 @@ void mouseClicked() // Single cell birth or death, as well as placing patterns.
     PVector l = board.toGrid(mouseX, mouseY); // Mouse location to grid position
     if (mouseButton == LEFT) // Only on Left click
     {
-      if(window.patternName == "single" || window.patternName == undefined)
+      if(Pattern.name == "single" || Pattern.name == undefined)
       {
         world[(int)l.x][(int)l.y][0] = (world[(int)l.x][(int)l.y][0]+1)%2;
       }
@@ -241,10 +240,10 @@ class Grid
 
 void placeForm(int mx, int my)
 {
-  String form = window.patternName;
-  int[] intvals = int(split(window.patternShape,','));
-  int dx = window.patternWidth;
-  int dy = window.patternHeight;
+  String form = Pattern.name;
+  int[] intvals = int(split(Pattern.shape,','));
+  int dx = Pattern.width;
+  int dy = Pattern.height;
   for(int x = 0; x<dx; x++)
   {
     for(int y = 0; y<dy; y++)
