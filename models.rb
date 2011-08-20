@@ -22,6 +22,3 @@ class Category
   
   has n, :patterns
 end
-
-# DataMapper.auto_upgrade!
-# DataMapper.auto_migrate!
