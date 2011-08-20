@@ -23,6 +23,7 @@ GEM
       data_objects (= 0.10.6)
     json (1.5.3)
     rack (1.2.2)
+    sass (3.1.7)
     sinatra (1.2.1)
       rack (~> 1.1)
       tilt (< 2.0, >= 1.2.2)
@@ -37,4 +38,5 @@ DEPENDENCIES
   dm-postgres-adapter
   dm-sqlite-adapter
   json
+  sass
   sinatra

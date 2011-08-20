@@ -1,26 +1,37 @@
+$black: #000000;
+$blue: #0792e2;
+
+@mixin relative {
+    display: block;
+    position: relative;
+}
+
+@mixin flush {
+    margin: 0;
+    padding: 0;
+}
+
 html {
-  display: block;
-  position: relative;
-  margin: 0;
-  padding: 0;
-  background: black; }
+    @include relative;
+    @include flush;
+    background: $black;
+}
 
 body {
-  display: block;
-  position: relative;
-  margin: 0;
-  padding: 0;
-  background: black;
-  color: #eee;
-  font-family: 'Open Sans', 'Verdana',sans-serif;
-  font-size: 12px;
-  top: 0; }
+    @include relative;
+    @include flush;
+    background: $black;
+    color: #eee;
+    font-family: 'Open Sans', 'Verdana',sans-serif;
+    font-size: 12px;
+    top: 0; }
 
 div {
   -webkit-box-sizing: border-box; }
 
 a, a:visited {
-  color: #0792e2; }
+  color: $blue;
+}
 
 a:hover, a:focus {
   color: black; }
@@ -64,19 +75,18 @@ canvas {
 /** CONTROL PANEL
 ____________________________________________ */
 #controlpanel {
-  display: block;
-  position: relative;
-  background-color: #333333;
-  background-image: -moz-linear-gradient(0% 100% 90deg, #111111, #333333, #666666 100%);
-  background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#666666), to(#111111), color-stop(0.1, #474747));
-  margin: 0;
-  top: 0;
-  left: 0;
-  overflow: auto;
-  padding: .5em 0;
-  -webkit-box-shadow: 0 1px 1px rgba(255, 255, 255, 0.2);
-  -moz-box-shadow: 0 1px 1px rgba(255, 255, 255, 0.2);
-  box-shadow: 0 1px 1px rgba(255, 255, 255, 0.2); }
+    @include relative;
+    background-color: #333333;
+    background-image: -moz-linear-gradient(0% 100% 90deg, #111111, #333333, #666666 100%);
+    background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#666666), to(#111111), color-stop(0.1, #474747));
+    margin: 0;
+    top: 0;
+    left: 0;
+    overflow: auto;
+    padding: .5em 0;
+    -webkit-box-shadow: 0 1px 1px rgba(255, 255, 255, 0.2);
+    -moz-box-shadow: 0 1px 1px rgba(255, 255, 255, 0.2);
+    box-shadow: 0 1px 1px rgba(255, 255, 255, 0.2); }
 
 #controlpanel ul {
   list-style: none;
