@@ -1,4 +1,3 @@
-DataMapper.setup(:default, ENV['DATABASE_URL'] ||  'sqlite:///Users/sklise/Sites/ConwaysGameOfLife/dbconway.db')
 
 class Pattern
   include DataMapper::Resource
