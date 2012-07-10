@@ -1,6 +1,9 @@
 # Conway's Game of Life
 *John Conway's Game of Life simulation in Processing/Processing.js.*
 
+Adapted from the Conway's Game of Life example included with [Processing](http:
+//processing.org) by Mike Davis.
+
 ## Website
 
 View this project on the web at http://conway.skli.se/. The site is served up
