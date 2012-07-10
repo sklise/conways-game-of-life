@@ -1,21 +1,14 @@
-# Conway's Game of Life 
-*John Conway's Game of Life simulation in Processing.js and Sinatra.*
+# Conway's Game of Life
+*John Conway's Game of Life simulation in Processing/Processing.js.*
 
-### Installation
-1. Download and unzip or clone this repository.
-2. Run `$ bundle install without --production` for a development installation with sqlite3.
-3. Change the path to the `.db` in `models.rb` to reflect the path where you've downloaded ConwaysGameOfLife.
-4. Set up the database by the following:
+## Website
 
-        $ bundle exec irb
-        irb> DataMapper.auto_migrate!
-
-5. Now launch the app with `$ bundle exec ruby index.rb`.
-6. Tell me if this readme doesn't make sense.
+View this project on the web at http://conway.skli.se/. The site is served up
+by Github as a Jekyll site.
 
 ### Thanks
-Thanks to [Dan Shiffman](https://github.com/shiffman) and his class _Nature of Code_ and [Greg Borenstein](https://github.com/atduskgreg)
-for his help with Sinatra.
+Thanks to [Dan Shiffman](https://github.com/shiffman) and his class _Nature of
+Code_.
 
 #### TODO
 - Previews of patterns in javascript

@@ -1,6 +1,0 @@
-<% @category.patterns.each do |pattern| %>
-  <a href="#<%= pattern.id %>" class="pattern">
-    <img src="http://conways.s3.amazonaws.com/<%= pattern.name.downcase %>.png"/>
-    <%= pattern.name.capitalize %>
-  </a>
-<% end %>

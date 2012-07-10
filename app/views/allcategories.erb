@@ -1,8 +1,0 @@
-<% @allcategories.each do |category| %>
-  <h2><%= category.name %></h2>
-    <ul id="categorylist">
-      <% category.patterns.each do |pattern| %>
-        <li><%= pattern.name %> <img src="http://conways.s3.amazonaws.com/<%= pattern.name.downcase %>.png"/></li>
-      <% end %>
-    </ul>
-<% end %>
