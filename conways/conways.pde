@@ -315,6 +315,54 @@ class Life {
 
     return domainAndRange;
   }
+
+  // ### EVENTS
+
+  public void zoomOut() {
+    if (cellSize > 1) {
+      cellSize -= (cellSize > width/20) ? 4 : 1;
+    }
+  }
+
+  public void zoomIn() {
+    if (cellSize < min(width, height)) {
+      cellSize += (cellSize > width/20) ? 4 : 1;
+    }
+  }
+
+  public void pause() { paused = !paused; }
+
+  public void addOrDestroyAtScreenCoord(int x, int y) {
+    // Turn mouse position into life coordinates
+    PVector coordinates = lifeCoordinates(new PVector(x, y));
+
+    String coordKey = coordinates.x + "," + coordinates.y;
+
+    if (population.containsKey(coordKey)) {
+      population.remove(coordKey);
+    } else {
+      population.put(coordKey, coordinates);
+    }
+  }
+}
+
+void mouseClicked() {
+  life.addOrDestroyAtScreenCoord(mouseX, mouseY);
+}
+
+void mouseDragged() {
+  // TODO: Remove flickering...
+  life.addOrDestroyAtScreenCoord(mouseX, mouseY);
+}
+
+void keyTyped() {
+  switch(key) {
+    case '-' : life.zoomOut(); break;
+    case '=' : life.zoomIn(); break;
+    case '+' : life.zoomIn(); break;
+    case ' ' : life.pause(); break;
+    default: break;
+  }
 }
 
 // dragging the mouse is different than clicking. Requires mousePressed() for
