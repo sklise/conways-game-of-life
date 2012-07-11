@@ -17,7 +17,7 @@ void draw() {
   noStroke();
   background(255);
   fill(0);
-  frameRate(60);
+  frameRate(12);
 
   logging = "\nNEW FRAME: " + frameRate + "\n";
   frameStart = millis();
@@ -25,7 +25,7 @@ void draw() {
   life.run(width, height, frameCount);
 
   logging += "Timer: " + (millis() - frameStart) + "\n";
-  println(logging);
+  // println(logging);
 }
 
 // Life: Conway's Game of Life wrapper.
@@ -66,8 +66,8 @@ class Life {
     paused = false;
     gridThickness = showGrid ? 1 : 0;
 
-    population = new HashMap<String,PVector>();
-    potentialBirths = new HashMap<String,PVector>();
+    population = new HashMap<String,PVector>(100);
+    potentialBirths = new HashMap<String,PVector>(100);
 
     deathbed = new ArrayList<String>();
     checked = new ArrayList<String>();
