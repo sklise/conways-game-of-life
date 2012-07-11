@@ -80,20 +80,19 @@ class Life {
   // implemented.
   PVector focus = new PVector(0,0);
   // Pixel size of a cell. Must be >=1.
-  int cellSize = 9;
+  int cellSize;
   // Should gridlines be drawn?
-  boolean gridLines = true;
+  boolean gridLines;
   // Pixel size of grid.
   int gridThickness;
   // All the coordinates that are alive.
-  // HashMap population;
   ArrayList<PVector> population;
   // A list of coordinates that have already been checked in update.
-  ArrayList checked;
+  ArrayList<PVector> checked;
   // All cells to kill.
-  ArrayList deathbed;
+  ArrayList<PVector> deathbed;
   // All cells to be born.
-  ArrayList nursery;
+  ArrayList<PVector> nursery;
   // Number of generations.
   int ageOfWorld;
   // Number of frames per generation.
@@ -101,25 +100,19 @@ class Life {
 
   Life() {
     ageOfWorld = 0;
+    cellSize = 9;
     lengthOfGeneration = 12;
-    // population = new HashMap();
-    population = new ArrayList<PVector>();
-
-    // population.put("-4", saveY(-6));
-    population.add(new PVector(-4,-6));
-    population.add(new PVector(0,2));
-    population.add(new PVector(0,0));
-    population.add(new PVector(0,1));
-    checked = new ArrayList();
+    gridLines = true;
     gridThickness = gridLines ? 1 : 0;
-  }
+    population = new ArrayList<PVector>();
+    deathbed = new ArrayList<PVector>();
+    nursery = new ArrayList<PVector>();
+    checked = new ArrayList<PVector>();
 
-  HashMap saveY(int ycoord) {
-    HashMap hm = new HashMap();
-    hm.put(Integer.toString(ycoord), 1);
-    return hm;
+    // population.add(new PVector(-4,-6));
+    population.add(new PVector(0.0, 0.0));
+    population.add(new PVector(1.0, 0.0));
   }
-
 
   // Public: Run Life.
   public void run(int windowWidth, int windowHeight, int totalFrames) {
@@ -142,6 +135,10 @@ class Life {
   private void checkCells() {
     for(PVector cell : population) {
       println(cell);
+      for(int x = -1; x < 2; x++) {
+        PVector test = new PVector(cell.x + x, cell.y);
+        println("  " + test + " : " + cell + " : " + population.contains(new PVector(0,0)));
+      }
     }
   }
 
@@ -207,39 +204,6 @@ class Life {
           rect(cellOnScreen.x, cellOnScreen.y, cellSize, cellSize);
         }
     }
-
-    // Iterator i = population.entrySet().iterator();  // Get an iterator
-
-    // while (i.hasNext()) {
-    //   Map.Entry row = (Map.Entry)i.next();
-
-    //   HashMap x = (HashMap) row.getValue();
-
-    //   Iterator j = x.entrySet().iterator();
-
-    //   while (j.hasNext()) {
-    //     Map.Entry column = (Map.Entry)j.next();
-    //     println(row.getKey() + " " + column.getKey());
-
-    //     PVector cell = hashValuesToPVector(row.getKey(), column.getKey());
-
-    //     if (cell.x >= domainAndRange[0] && cell.x < domainAndRange[1]
-    //       && cell.y >= domainAndRange[2] && cell.y < domainAndRange[3]) {
-    //       PVector cellOnScreen = screenCoordinates(cell);
-    //       rect(cellOnScreen.x, cellOnScreen.y, cellSize, cellSize);
-    //     }
-    //   }
-
-      // print(me.getKey() + " is ");
-      // println(me.getValue());
-    // }
-
-  }
-
-  PVector hashValuesToPVector(Object row, Object column) {
-    int x = Integer.parseInt((String)row);
-    int y = Integer.parseInt((String)column);
-    return new PVector(x,y);
   }
 
   // Private: Converts cell coordinates to screen coordinates.
