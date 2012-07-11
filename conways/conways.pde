@@ -36,6 +36,10 @@ class Life {
   ArrayList<String> checked;
   // All cells to kill.
   ArrayList<String> deathbed;
+
+  // Dead cells that neighbor living cells
+  HashMap<String,PVector> potentialBirths;
+
   // All cells to be born.
   ArrayList<PVector> nursery;
   // Number of generations.
@@ -46,11 +50,12 @@ class Life {
   Life() {
     ageOfWorld = 0;
     cellSize = 9;
-    lengthOfGeneration = 18;
+    lengthOfGeneration = 6;
     gridLines = true;
     gridThickness = gridLines ? 1 : 0;
 
     population = new HashMap<String,PVector>();
+    potentialBirths = new HashMap<String,PVector>();
 
     deathbed = new ArrayList<String>();
     checked = new ArrayList<String>();
@@ -89,7 +94,8 @@ class Life {
     if (totalFrames % lengthOfGeneration == 0) {
       ageOfWorld++;
 
-      checkCells();
+      checkLivingCells();
+      checkBirthConditions();
       kill();
       birth();
     }
@@ -99,38 +105,38 @@ class Life {
   // birthing.
   //
   // Returns nothing.
-  private void checkCells() {
+  private void checkLivingCells() {
+    // Create an iterator on population and check every cell in the population.
     Iterator i = population.entrySet().iterator();
+
+    while (i.hasNext()) {
+      // Get the key and value from the HashMap entry.
+      Map.Entry entry = (Map.Entry)i.next();
+      PVector cell = (PVector)entry.getValue();
+      String cellString = (String)entry.getKey();
+
+      // Count the number of neighbors.
+      int neighborCount = countNeighbors(cell, cellString, true);
+      // Mark the cell for death.
+      if (neighborCount < 2 || neighborCount > 3) { deathbed.add(cellString); }
+    }
+  }
+
+  private void checkBirthConditions() {
+    println("BirthCondition Pool: " + potentialBirths.size());
+
+    Iterator i = potentialBirths.entrySet().iterator();
 
     while (i.hasNext()) {
       Map.Entry entry = (Map.Entry)i.next();
       PVector cell = (PVector)entry.getValue();
       String cellString = (String)entry.getKey();
 
-      int neighborCount = countNeighbors(cell, cellString);
-
-      if (neighborCount < 2 || neighborCount > 3) { deathbed.add(cellString); }
+      int neighborCount = countNeighbors(cell, cellString, false);
+      if (neighborCount == 3) { nursery.add(cell); }
     }
-  }
 
-  // Public: Given a cell, determine how many alive neighbors the cell has.
-  //
-  // cell - PVector coordinates of the cell.
-  // cellString - String of a comma separated float of the cell's coordinates.
-  //
-  // Returns an integer value between 0 and 8.
-  public int countNeighbors(PVector cell, String cellString) {
-    int neighborCount = 0;
-    for (int x = -1; x <= 1; x++) {
-      for (int y = -1; y <= 1; y++ ) {
-        String neighborKey = (cell.x + x) + "," + (cell.y + y);
-        if (!neighborKey.equals(cellString) &&
-          population.containsKey(neighborKey)) {
-          neighborCount++;
-        }
-      }
-    }
-    return neighborCount;
+    potentialBirths.clear();
   }
 
   // Private: Removes all cells in deathbed from population. Clears deathbed.
@@ -146,7 +152,8 @@ class Life {
 
   // Private: add nursery to population.
   private void birth() {
-
+    for (PVector cell : nursery) { addPVectorToHashMap(cell, population); }
+    nursery.clear();
   }
 
   // Private: Draw all grid lines and living cells that fit inside the window.
@@ -160,6 +167,8 @@ class Life {
 
     text(ageOfWorld, 0, 15);
   }
+
+  // ## RENDER METHODS
 
   private void drawGrid(int windowWidth, int windowHeight) {
     stroke(230, 230, 230, 255);
@@ -186,7 +195,6 @@ class Life {
        * (cellSize + gridThickness));
     }
 
-    // println(onScreenDomainAndRange(windowWidth, windowHeight));
     line(0, height/2, width, height/2);
     line(width/2, 0, width/2, height);
   }
@@ -207,6 +215,42 @@ class Life {
         rect(cellOnScreen.x, cellOnScreen.y, cellSize, cellSize);
       }
     }
+  }
+
+  // ## UTILITY METHODS
+
+  // Public: Given a cell, determine how many alive neighbors the cell has.
+  //
+  // cell - PVector coordinates of the cell.
+  // cellString - String of a comma separated float of the cell's coordinates.
+  //
+  // Returns an integer value between 0 and 8.
+  public int countNeighbors(PVector cell, String cellString,
+    boolean checkForBirths) {
+    int neighborCount = 0;
+    for (int x = -1; x <= 1; x++) {
+      for (int y = -1; y <= 1; y++ ) {
+        String neighborKey = (cell.x + x) + "," + (cell.y + y);
+
+        // If this neighboring cell is alive increase the neighborCount.
+        // Otherwise add the cell to list of potential births.
+        if (!neighborKey.equals(cellString) &&
+          population.containsKey(neighborKey)) {
+          neighborCount++;
+        } else {
+          if (checkForBirths) {
+            potentialBirths.put(neighborKey, new PVector(cell.x + x,
+              cell.y + y));
+          }
+        }
+      }
+    }
+    return neighborCount;
+  }
+
+  public void addPVectorToHashMap(PVector vector, HashMap map) {
+    String key = vector.x + "," + vector.y;
+    map.put(key, vector);
   }
 
   // Private: Converts cell coordinates to screen coordinates.
