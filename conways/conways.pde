@@ -35,8 +35,10 @@ class Life {
   PVector focus = new PVector(0,0);
   // Pixel size of a cell. Must be >=1.
   int cellSize;
+  // Is life paused?
+  boolean paused;
   // Should gridlines be drawn?
-  boolean gridLines;
+  boolean showGrid;
   // Pixel size of grid.
   int gridThickness;
   // All the coordinates that are alive.
@@ -58,10 +60,11 @@ class Life {
 
   Life() {
     ageOfWorld = 0;
-    cellSize = 4;
-    lengthOfGeneration = 5;
-    gridLines = true;
-    gridThickness = gridLines ? 1 : 0;
+    cellSize = 20;
+    lengthOfGeneration = 8;
+    showGrid = false;
+    paused = false;
+    gridThickness = showGrid ? 1 : 0;
 
     population = new HashMap<String,PVector>();
     potentialBirths = new HashMap<String,PVector>();
@@ -100,8 +103,11 @@ class Life {
   //
   // Returns nothing.
   public void age(int totalFrames) {
-    if (totalFrames % lengthOfGeneration == 0) {
+    if (paused) {
+      text("PAUSED", width/2, 15);
+    } else if (totalFrames % lengthOfGeneration == 0) {
       ageOfWorld++;
+      logging += "AGE: " + ageOfWorld;
 
       checkLivingCells();
       checkBirthConditions();
@@ -153,6 +159,7 @@ class Life {
   // Returns nothing.
   private void kill() {
     logging += "Deathbed size: " + deathbed.size() + "\n";
+
     // Remove cell from population.
     for (String cellString : deathbed) { population.remove(cellString); }
     // Empty the ArrayList.
@@ -170,14 +177,15 @@ class Life {
 
     int[] domainAndRange = onScreenDomainAndRange(windowWidth, windowHeight);
 
-    if (gridLines) { drawGrid(windowWidth, windowHeight); }
+    if (showGrid) { drawGrid(windowWidth, windowHeight); }
 
     drawCells(domainAndRange);
 
     text(ageOfWorld, 0, 15);
+    text(frameRate, 0, 30);
   }
 
-  // ## RENDER METHODS
+  // ### RENDER METHODS
 
   private void drawGrid(int windowWidth, int windowHeight) {
     stroke(230, 230, 230, 255);
@@ -227,7 +235,7 @@ class Life {
     }
   }
 
-  // ## UTILITY METHODS
+  // ### UTILITY METHODS
 
   // Public: Given a cell, determine how many alive neighbors the cell has.
   //
@@ -270,6 +278,15 @@ class Life {
       height/2 + cellCoordinates.y * (cellSize + gridThickness) + gridThickness
     );
     return s;
+  }
+
+  public PVector lifeCoordinates(PVector mouse) {
+    PVector coordinates = new PVector(
+      floor((mouse.x - width/2) / (cellSize + gridThickness)),
+      floor((mouse.y - height/2) / (cellSize + gridThickness))
+      );
+
+    return coordinates;
   }
 
   private float cellsFit(int fitSize) {
@@ -327,30 +344,6 @@ class Life {
 //     }
 //   }
 // }
-
-// Single cell birth or death, as well as placing patterns.
-// void mouseClicked()
-// {
-// Check bounds of grid
-//   if (mouseX > board.tx && mouseX < board.bx && mouseY < board.by && mouseY
-//      > board.ty)
-//   {
-// Mouse location to grid position
-//     PVector l = board.toGrid(mouseX, mouseY);
-//     if (mouseButton == LEFT) // Only on Left click
-//     {
-//         world[(int)l.x][(int)l.y][0] = (world[(int)l.x][(int)l.y][0]+1)%2;
-//     }
-//   }
-// }
-
-//   PVector toGrid(int x, int y) // Convert a pixel number to a grid number
-//   {
-//     int gridx = (x - tx)/res;
-//     int gridy = (y - ty)/res;
-//     PVector v = new PVector(gridx,gridy);
-//     return v;
-//   }
 
 // void placeForm(int mx, int my)
 // {
