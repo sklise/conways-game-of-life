@@ -2,72 +2,21 @@
 // Steven Klise <http://skli.se>
 // 2011-2012
 
-// Grid board;
-// int[][][] world;
-// boolean kill = false;
-// boolean running = false;
-
 Life newWorld;
 
-void setup()
-{
+void setup() {
   size(100, 108);
   newWorld = new Life();
   frameRate(12);
-  // board = new Grid(10, 10, width-10, height-3, 10);
-  // world = new int[board.gw][board.gh][2];
 }
 
-void draw()
-{
+void draw() {
   noStroke();
   background(255);
   fill(0);
-  newWorld.run(width, height, frameCount);
-
   frameRate(12);
-  // draw and update.
-  // for (int x=0; x<board.gw; x++) {
-  //   for (int y=0; y<board.gh; y++)
-  //   {
-  //     if (world[x][y][0] == 1)
-  //     {
-  //       PVector l = board.toScreen(x, y);
-  //       rect(l.x, l.y, board.res, board.res);
-  //     }
-  //     int n = neighbors(x, y);
-  //     if ((n < 2 || n > 3) && world[x][y][0] == 1)
-  //     {
-  //       world[x][y][1] = -1;
-  //     }
-  //     else if (n == 3 && world[x][y][0] == 0)
-  //     {
-  //       world[x][y][1] = 1;
-  //     }
-  //     else
-  //     {
-  //       world[x][y][1] = 0;
-  //     }
-  //   }
-  // }
-  // if (running){
-  //   for (int x=0; x<board.gw; x++)
-  //   {
-  //     for (int y=0; y<board.gh; y++)
-  //     {
-  //       if (world[x][y][1] == 1 || (world[x][y][1] == 0 && world[x][y][0] == 1))
-  //       {
-  //         world[x][y][0] = 1;
-  //       }
-  //       else if (world[x][y][1] == -1)
-  //       {
-  //         world[x][y][0] = 0;
-  //       }
-  //     }
-  //   }
-  // }
-  // ifClear();
-  //println("running");
+
+  newWorld.run(width, height, frameCount);
 }
 
 void ifClear() // Function to clear the entire world.
@@ -124,59 +73,6 @@ void ifClear() // Function to clear the entire world.
 //   }
 // }
 
-// int neighbors(int x, int y)
-// {
-  // if(window.edges)
-  // {
-  //   int n =0;
-  //   if (x+1 < board.gw)
-  //   {
-  //     n += world[(x + 1)][y][0];
-  //     if (y+1 < board.gh)
-  //     {
-  //       n += world[(x + 1)][(y + 1)][0];
-  //     }
-  //     if (y-1 >= 0)
-  //     {
-  //       n += world[(x + 1)][(y - 1)][0];
-  //     }
-  //   }
-  //   if (x-1 >= 0)
-  //   {
-  //     n += world[(x - 1) % board.gw][y][0];
-  //     if (y+1 < board.gh)
-  //     {
-  //       n += world[(x - 1)][(y + 1)][0];
-  //     }
-  //     if (y-1 >= 0)
-  //     {
-  //       n += world[(x - 1)][(y - 1)][0];
-  //     }
-  //   }
-  //   if (y-1 >= 0)
-  //   {
-  //     n += world[x][(y - 1)][0];
-  //   }
-
-  //   if ( y+1 < board.gh )
-  //   {
-  //     n += world[x][(y + 1)][0];
-  //   }
-  //   return n;
-  // }
-  // else
-  // {
-    // return world[(x + 1) % board.gw][y][0] +
-    //   world[x][(y + 1) % board.gh][0] +
-    //   world[(x + board.gw - 1) % board.gw][y][0] +
-    //   world[x][(y + board.gh - 1) % board.gh][0] +
-    //   world[(x + 1) % board.gw][(y + 1) % board.gh][0] +
-    //   world[(x + board.gw - 1) % board.gw][(y + 1) % board.gh][0] +
-    //   world[(x + board.gw - 1) % board.gw][(y + board.gh - 1) % board.gh][0] +
-    //   world[(x + 1) % board.gw][(y + board.gh - 1) % board.gh][0];
-  // }
-// }
-
 // Life: Conway's Game of Life wrapper.
 class Life {
   // The center of the visible field.
@@ -190,9 +86,14 @@ class Life {
   // Pixel size of grid.
   int gridThickness;
   // All the coordinates that are alive.
-  ArrayList population;
+  // HashMap population;
+  ArrayList<PVector> population;
   // A list of coordinates that have already been checked in update.
   ArrayList checked;
+  // All cells to kill.
+  ArrayList deathbed;
+  // All cells to be born.
+  ArrayList nursery;
   // Number of generations.
   int ageOfWorld;
   // Number of frames per generation.
@@ -201,7 +102,10 @@ class Life {
   Life() {
     ageOfWorld = 0;
     lengthOfGeneration = 12;
-    population = new ArrayList();
+    // population = new HashMap();
+    population = new ArrayList<PVector>();
+
+    // population.put("-4", saveY(-6));
     population.add(new PVector(-4,-6));
     population.add(new PVector(0,2));
     population.add(new PVector(0,0));
@@ -209,6 +113,13 @@ class Life {
     checked = new ArrayList();
     gridThickness = gridLines ? 1 : 0;
   }
+
+  HashMap saveY(int ycoord) {
+    HashMap hm = new HashMap();
+    hm.put(Integer.toString(ycoord), 1);
+    return hm;
+  }
+
 
   // Public: Run Life.
   public void run(int windowWidth, int windowHeight, int totalFrames) {
@@ -219,8 +130,29 @@ class Life {
   void age(int totalFrames) {
     if (totalFrames % lengthOfGeneration == 0) {
       ageOfWorld++;
-      println("hi" + " " + totalFrames);
+
+      checkCells();
+      kill();
+      birth();
     }
+  }
+
+  // Private: Check population for kill or stagnate, and neighboring cells for
+  // birthing.
+  private void checkCells() {
+    for(PVector cell : population) {
+      println(cell);
+    }
+  }
+
+  // Private: remove deathbed from population.
+  private void kill() {
+
+  }
+
+  // Private: add nursery to population.
+  private void birth() {
+
   }
 
   // Private: Draw all grid lines and living cells that fit inside the window.
@@ -267,15 +199,47 @@ class Life {
 
   private void drawCells(int[] domainAndRange) {
     noStroke();
-    for(int i = 0; i < population.size(); i++) {
-      PVector cell = (PVector)population.get(i);
-      // Draw cells only if it is within the range.
-      if (cell.x >= domainAndRange[0] && cell.x < domainAndRange[1]
-        && cell.y >= domainAndRange[2] && cell.y < domainAndRange[3]) {
-        PVector cellOnScreen = screenCoordinates(cell);
-        rect(cellOnScreen.x, cellOnScreen.y, cellSize, cellSize);
-      }
+
+    for(PVector cell : population) {
+        if (cell.x >= domainAndRange[0] && cell.x < domainAndRange[1]
+          && cell.y >= domainAndRange[2] && cell.y < domainAndRange[3]) {
+          PVector cellOnScreen = screenCoordinates(cell);
+          rect(cellOnScreen.x, cellOnScreen.y, cellSize, cellSize);
+        }
     }
+
+    // Iterator i = population.entrySet().iterator();  // Get an iterator
+
+    // while (i.hasNext()) {
+    //   Map.Entry row = (Map.Entry)i.next();
+
+    //   HashMap x = (HashMap) row.getValue();
+
+    //   Iterator j = x.entrySet().iterator();
+
+    //   while (j.hasNext()) {
+    //     Map.Entry column = (Map.Entry)j.next();
+    //     println(row.getKey() + " " + column.getKey());
+
+    //     PVector cell = hashValuesToPVector(row.getKey(), column.getKey());
+
+    //     if (cell.x >= domainAndRange[0] && cell.x < domainAndRange[1]
+    //       && cell.y >= domainAndRange[2] && cell.y < domainAndRange[3]) {
+    //       PVector cellOnScreen = screenCoordinates(cell);
+    //       rect(cellOnScreen.x, cellOnScreen.y, cellSize, cellSize);
+    //     }
+    //   }
+
+      // print(me.getKey() + " is ");
+      // println(me.getValue());
+    // }
+
+  }
+
+  PVector hashValuesToPVector(Object row, Object column) {
+    int x = Integer.parseInt((String)row);
+    int y = Integer.parseInt((String)column);
+    return new PVector(x,y);
   }
 
   // Private: Converts cell coordinates to screen coordinates.
@@ -284,7 +248,6 @@ class Life {
       width/2 + cellCoordinates.x * (cellSize + gridThickness) + gridThickness,
       height/2 + cellCoordinates.y * (cellSize + gridThickness) + gridThickness
     );
-    println(s);
     return s;
   }
 
@@ -320,9 +283,6 @@ class Life {
   }
 }
 
-// class Grid
-// {
-
 //   PVector toGrid(int x, int y) // Convert a pixel number to a grid number
 //   {
 //     int gridx = (x - tx)/res;
@@ -331,26 +291,17 @@ class Life {
 //     return v;
 //   }
 
-//   PVector toScreen(int x, int y) // Convert a grid number to a pixel number
-//   {
-//     int sx = x*res+tx;
-//     int sy = y*res+ty;
-//     PVector v = new PVector(sx,sy);
-//     return v;
-//   }
-// }
-
 // void placeForm(int mx, int my)
 // {
-  // String form = Pattern.name;
-  // int[] intvals = int(split(Pattern.shape,','));
-  // int dx = Pattern.width;
-  // int dy = Pattern.height;
-  // for(int x = 0; x<dx; x++)
-  // {
-  //   for(int y = 0; y<dy; y++)
-  //   {
-  //     world[mx+x][my+y][0] = intvals[x+dx*y];
-  //   }
-  // }
+// String form = Pattern.name;
+// int[] intvals = int(split(Pattern.shape,','));
+// int dx = Pattern.width;
+// int dy = Pattern.height;
+// for(int x = 0; x<dx; x++)
+// {
+//   for(int y = 0; y<dy; y++)
+//   {
+//     world[mx+x][my+y][0] = intvals[x+dx*y];
+//   }
+// }
 // }
