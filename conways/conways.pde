@@ -21,7 +21,7 @@ void draw() {
 
 void ifClear() // Function to clear the entire world.
 {
-  // if(window.cleargrid)
+  // if (window.cleargrid)
   // {
   //   for (int x=0; x<board.gw; x++)
   //   {
@@ -36,10 +36,12 @@ void ifClear() // Function to clear the entire world.
   //   window.cleargrid = false;
   // }
 }
-
-// void mouseDragged() // dragging the mouse is different than clicking. Requires mousePressed() for initial condition.
+// dragging the mouse is different than clicking. Requires mousePressed() for
+// initial condition.
+// void mouseDragged()
 // {
-//   if (mouseX > board.tx && mouseX < board.bx && mouseY < board.by && mouseY > board.ty) {
+//   if (mouseX > board.tx && mouseX < board.bx && mouseY < board.by && mouseY
+// > board.ty) {
 //     PVector t = board.toGrid(mouseX, mouseY);
 //     if (!kill) {
 //       world[(int)t.x][(int)t.y][0] = 1;
@@ -51,7 +53,8 @@ void ifClear() // Function to clear the entire world.
 
 // void mousePressed() // Did the user press on a live or dead cell?
 // {
-//   if (mouseX > board.tx && mouseX < board.bx && mouseY < board.by && mouseY > board.ty) {
+//   if (mouseX > board.tx && mouseX < board.bx && mouseY < board.by && mouseY
+// > board.ty) {
 //     PVector l = board.toGrid(mouseX, mouseY);
 //     if (world[(int)l.x][(int)l.y][0] != 1) {
 //       kill = false;
@@ -61,11 +64,15 @@ void ifClear() // Function to clear the entire world.
 //   }
 // }
 
-// void mouseClicked() // Single cell birth or death, as well as placing patterns.
+// Single cell birth or death, as well as placing patterns.
+// void mouseClicked()
 // {
-//   if (mouseX > board.tx && mouseX < board.bx && mouseY < board.by && mouseY > board.ty) // Check bounds of grid
+// Check bounds of grid
+//   if (mouseX > board.tx && mouseX < board.bx && mouseY < board.by && mouseY
+//      > board.ty)
 //   {
-//     PVector l = board.toGrid(mouseX, mouseY); // Mouse location to grid position
+// Mouse location to grid position
+//     PVector l = board.toGrid(mouseX, mouseY);
 //     if (mouseButton == LEFT) // Only on Left click
 //     {
 //         world[(int)l.x][(int)l.y][0] = (world[(int)l.x][(int)l.y][0]+1)%2;
@@ -86,11 +93,11 @@ class Life {
   // Pixel size of grid.
   int gridThickness;
   // All the coordinates that are alive.
-  ArrayList<PVector> population;
+  HashMap<String,PVector> population;
   // A list of coordinates that have already been checked in update.
   ArrayList<PVector> checked;
   // All cells to kill.
-  ArrayList<PVector> deathbed;
+  ArrayList<String> deathbed;
   // All cells to be born.
   ArrayList<PVector> nursery;
   // Number of generations.
@@ -104,14 +111,20 @@ class Life {
     lengthOfGeneration = 12;
     gridLines = true;
     gridThickness = gridLines ? 1 : 0;
-    population = new ArrayList<PVector>();
-    deathbed = new ArrayList<PVector>();
+
+    population = new HashMap<String,PVector>();
+
+    deathbed = new ArrayList<String>();
     nursery = new ArrayList<PVector>();
     checked = new ArrayList<PVector>();
 
-    // population.add(new PVector(-4,-6));
-    population.add(new PVector(0.0, 0.0));
-    population.add(new PVector(1.0, 0.0));
+    population.put("-4.0,-6.0", new PVector(-4,-6));
+    population.put("-4.0,-5.0", new PVector(-4,-5));
+    population.put("-3.0,-6.0", new PVector(-3,-6));
+    population.put("-3.0,-5.0", new PVector(-3,-5));
+    population.put("0.0,0.0", new PVector(0.0, 0.0));
+    population.put("1.0,0.0", new PVector(1, 0.0));
+    population.put("2.0,0.0", new PVector(2, 0.0));
   }
 
   // Public: Run Life.
@@ -133,18 +146,40 @@ class Life {
   // Private: Check population for kill or stagnate, and neighboring cells for
   // birthing.
   private void checkCells() {
-    for(PVector cell : population) {
-      println(cell);
-      for(int x = -1; x < 2; x++) {
-        PVector test = new PVector(cell.x + x, cell.y);
-        println("  " + test + " : " + cell + " : " + population.contains(new PVector(0,0)));
+    Iterator i = population.entrySet().iterator();
+
+    while (i.hasNext()) {
+      Map.Entry entry = (Map.Entry)i.next();
+      PVector cell = (PVector)entry.getValue();
+      String cellString = (String)entry.getKey();
+
+      int neighborCount = countNeighbors(cell, cellString);
+      println(neighborCount);
+      if (neighborCount != 2 && neighborCount != 3) {
+        deathbed.add(cellString);
       }
     }
   }
 
+  int countNeighbors(PVector cell, String cellString) {
+    int neighborCount = 0;
+    for(int x = -1; x <= 1; x++) {
+      for (int y = -1; y <= 1; y++ ) {
+        String neighborKey = (cell.x + x) + "," + (cell.y + y);
+        if (!neighborKey.equals(cellString) &&
+          population.containsKey(neighborKey)) {
+          neighborCount++;
+        }
+      }
+    }
+    return neighborCount;
+  }
+
   // Private: remove deathbed from population.
   private void kill() {
-
+    for(String cellString : deathbed) {
+      population.remove(cellString);
+    }
   }
 
   // Private: add nursery to population.
@@ -157,7 +192,7 @@ class Life {
 
     int[] domainAndRange = onScreenDomainAndRange(windowWidth, windowHeight);
 
-    if(gridLines) { drawGrid(windowWidth, windowHeight); }
+    if (gridLines) { drawGrid(windowWidth, windowHeight); }
 
     drawCells(domainAndRange);
 
@@ -197,12 +232,18 @@ class Life {
   private void drawCells(int[] domainAndRange) {
     noStroke();
 
-    for(PVector cell : population) {
-        if (cell.x >= domainAndRange[0] && cell.x < domainAndRange[1]
-          && cell.y >= domainAndRange[2] && cell.y < domainAndRange[3]) {
-          PVector cellOnScreen = screenCoordinates(cell);
-          rect(cellOnScreen.x, cellOnScreen.y, cellSize, cellSize);
-        }
+    Iterator i = population.entrySet().iterator();
+
+    while (i.hasNext()) {
+      Map.Entry entry = (Map.Entry)i.next();
+
+      PVector cell = (PVector)entry.getValue();
+
+      if (cell.x >= domainAndRange[0] && cell.x < domainAndRange[1]
+        && cell.y >= domainAndRange[2] && cell.y < domainAndRange[3]) {
+        PVector cellOnScreen = screenCoordinates(cell);
+        rect(cellOnScreen.x, cellOnScreen.y, cellSize, cellSize);
+      }
     }
   }
 
