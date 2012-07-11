@@ -190,7 +190,7 @@ class Life {
     // Find partial cell size and evenly distribute around edges of screen.
     PVector edgeCell = new PVector(
       (cellsOnScreen.x - floor(cellsOnScreen.x)) * (float)cellSize / 2,
-      (cellsOnScreen.y - floor(cellsOnScreen.y)) * (float)cellSize / 2);
+      (cellsOnScreen.y - ceil(cellsOnScreen.y)) * (float)cellSize / 2);
 
     // Draw vertical grid lines.
     for (int i=0; i < cellsOnScreen.x; i++) {
@@ -204,6 +204,7 @@ class Life {
        * (cellSize + gridThickness));
     }
 
+    stroke(255, 0, 0, 150);
     line(0, height/2, width, height/2);
     line(width/2, 0, width/2, height);
   }
