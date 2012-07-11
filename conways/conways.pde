@@ -2,11 +2,14 @@
 // Steven Klise <http://skli.se>
 // 2011-2012
 
-Life newWorld;
+Life life;
+
+String logging;
+int frameStart;
 
 void setup() {
-  size(500, 508);
-  newWorld = new Life();
+  size(600, 500);
+  life = new Life();
   frameRate(12);
 }
 
@@ -14,9 +17,15 @@ void draw() {
   noStroke();
   background(255);
   fill(0);
-  frameRate(12);
+  frameRate(60);
 
-  newWorld.run(width, height, frameCount);
+  logging = "\nNEW FRAME: " + frameRate + "\n";
+  frameStart = millis();
+
+  life.run(width, height, frameCount);
+
+  logging += "Timer: " + (millis() - frameStart) + "\n";
+  println(logging);
 }
 
 // Life: Conway's Game of Life wrapper.
@@ -49,8 +58,8 @@ class Life {
 
   Life() {
     ageOfWorld = 0;
-    cellSize = 9;
-    lengthOfGeneration = 6;
+    cellSize = 4;
+    lengthOfGeneration = 5;
     gridLines = true;
     gridThickness = gridLines ? 1 : 0;
 
@@ -123,7 +132,7 @@ class Life {
   }
 
   private void checkBirthConditions() {
-    println("BirthCondition Pool: " + potentialBirths.size());
+    logging += "BirthCondition Pool: " + potentialBirths.size() + "\n";
 
     Iterator i = potentialBirths.entrySet().iterator();
 
@@ -143,7 +152,7 @@ class Life {
   //
   // Returns nothing.
   private void kill() {
-    println(deathbed);
+    logging += "Deathbed size: " + deathbed.size() + "\n";
     // Remove cell from population.
     for (String cellString : deathbed) { population.remove(cellString); }
     // Empty the ArrayList.
