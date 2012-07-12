@@ -361,7 +361,7 @@ class Life {
 
     String coordKey = coordinates.x + "," + coordinates.y;
 
-    if (population.containsKey(coordKey) && killOnClickg) {
+    if (population.containsKey(coordKey) && killOnClick) {
       population.remove(coordKey);
     } else if (!killOnClick) {
       population.put(coordKey, coordinates);
