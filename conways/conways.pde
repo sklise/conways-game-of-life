@@ -37,6 +37,8 @@ class Life {
   int cellSize;
   // Is life paused?
   boolean paused;
+  // When clicking the mouse, will cells be killed or added?
+  boolean killOnClick;
   // Should gridlines be drawn?
   boolean showGrid;
   // Pixel size of grid.
@@ -359,22 +361,29 @@ class Life {
 
     String coordKey = coordinates.x + "," + coordinates.y;
 
-    if (population.containsKey(coordKey)) {
+    if (population.containsKey(coordKey) && killOnClickg) {
       population.remove(coordKey);
-    } else {
+    } else if (!killOnClick) {
       population.put(coordKey, coordinates);
     }
   }
+
+  public boolean isAliveAtMouse(int x, int y) {
+    PVector coordinates = lifeCoordinates(new PVector(x, y));
+    String coordKey = coordinates.x + "," + coordinates.y;
+    return population.containsKey(coordKey) ? true : false;
+  }
+
+  public void addMode(int x, int y) {
+    killOnClick = isAliveAtMouse(mouseX, mouseY);
+  }
 }
 
-void mouseClicked() {
-  life.addOrDestroyAtScreenCoord(mouseX, mouseY);
-}
+void mouseClicked() { life.addOrDestroyAtScreenCoord(mouseX, mouseY); }
 
-void mouseDragged() {
-  // TODO: Remove flickering...
-  life.addOrDestroyAtScreenCoord(mouseX, mouseY);
-}
+void mouseDragged() { life.addOrDestroyAtScreenCoord(mouseX, mouseY); }
+
+void mousePressed() { life.addMode(mouseX, mouseY); }
 
 void keyTyped() {
   switch(key) {
@@ -393,34 +402,6 @@ void keyPressed() {
   }
 }
 
-// dragging the mouse is different than clicking. Requires mousePressed() for
-// initial condition.
-// void mouseDragged()
-// {
-//   if (mouseX > board.tx && mouseX < board.bx && mouseY < board.by && mouseY
-// > board.ty) {
-//     PVector t = board.toGrid(mouseX, mouseY);
-//     if (!kill) {
-//       world[(int)t.x][(int)t.y][0] = 1;
-//     } else {
-//       world[(int)t.x][(int)t.y][0] = 0;
-//     }
-//   }
-// }
-
-// void mousePressed() // Did the user press on a live or dead cell?
-// {
-//   if (mouseX > board.tx && mouseX < board.bx && mouseY < board.by && mouseY
-// > board.ty) {
-//     PVector l = board.toGrid(mouseX, mouseY);
-//     if (world[(int)l.x][(int)l.y][0] != 1) {
-//       kill = false;
-//     } else {
-//       kill = true;
-//     }
-//   }
-// }
-
 // void placeForm(int mx, int my)
 // {
 // String form = Pattern.name;
@@ -435,3 +416,10 @@ void keyPressed() {
 //   }
 // }
 // }
+
+// TODO
+
+// - draw grid from (width/2, height/2) If you don't get back to this before
+// you forget, turn the grid on and zoom in and out. yea, that's what happens.
+// - implement moving focus aka panning
+// - predefined forms. Most likely store as JSON.
