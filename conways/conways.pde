@@ -8,7 +8,7 @@ String logging;
 int frameStart;
 
 void setup() {
-  size(600, 500);
+  size(900, 700);
   life = new Life();
   frameRate(12);
 }
@@ -274,8 +274,10 @@ class Life {
   // Private: Converts cell coordinates to screen coordinates.
   private PVector screenCoordinates(PVector cellCoordinates) {
     PVector s = new PVector(
-      width/2 + cellCoordinates.x * (cellSize + gridThickness) + gridThickness,
-      height/2 + cellCoordinates.y * (cellSize + gridThickness) + gridThickness
+      width/2 + (cellCoordinates.x - focus.x) * (cellSize + gridThickness)
+        + gridThickness,
+      height/2 + (cellCoordinates.y - focus.y)* (cellSize + gridThickness)
+        + gridThickness
     );
     return s;
   }
@@ -289,6 +291,11 @@ class Life {
     return coordinates;
   }
 
+  // Private: Calculates how many cells will fit within the given dimension.
+  //
+  // fitSize - Integer pixel value, intended to be width or height.
+  //
+  // Returns a float of the solution to the calculation.
   private float cellsFit(int fitSize) {
     return (float)fitSize / (cellSize + gridThickness);
   }
