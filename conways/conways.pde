@@ -423,3 +423,4 @@ void keyPressed() {
 // you forget, turn the grid on and zoom in and out. yea, that's what happens.
 // - implement moving focus aka panning
 // - predefined forms. Most likely store as JSON.
+// - step mode
