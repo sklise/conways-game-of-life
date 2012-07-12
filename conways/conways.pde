@@ -325,15 +325,29 @@ class Life {
 
   // ### EVENTS
 
+  public void slowDown() { lengthOfGeneration++; }
+
+  public void speedUp() {
+    lengthOfGeneration = lengthOfGeneration <= 1 ? 1 : lengthOfGeneration - 1;
+  }
+
   public void zoomOut() {
     if (cellSize > 1) {
-      cellSize -= (cellSize > width/20) ? 4 : 1;
+      if (cellSize > width/20) {
+        cellSize -= 4;
+      } else {
+        cellSize--;
+      }
     }
   }
 
   public void zoomIn() {
     if (cellSize < min(width, height)) {
-      cellSize += (cellSize > width/20) ? 4 : 1;
+      if (cellSize > width/20) {
+        cellSize += 4;
+      } else {
+        cellSize++;
+      }
     }
   }
 
@@ -369,6 +383,13 @@ void keyTyped() {
     case '+' : life.zoomIn(); break;
     case ' ' : life.pause(); break;
     default: break;
+  }
+}
+
+void keyPressed() {
+  switch(keyCode) {
+    case UP   : life.speedUp(); break;
+    case DOWN : life.slowDown(); break;
   }
 }
 
