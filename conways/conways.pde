@@ -64,7 +64,7 @@ class Life {
     ageOfWorld = 0;
     cellSize = 20;
     lengthOfGeneration = 8;
-    showGrid = false;
+    showGrid = true;
     paused = false;
     gridThickness = showGrid ? 1 : 0;
 
@@ -76,13 +76,19 @@ class Life {
 
     nursery = new ArrayList<PVector>();
 
-    population.put("-4.0,-6.0", new PVector(-4,-6));
-    population.put("-4.0,-5.0", new PVector(-4,-5));
-    population.put("-3.0,-6.0", new PVector(-3,-6));
-    population.put("-3.0,-5.0", new PVector(-3,-5));
-    population.put("0.0,0.0", new PVector(0.0, 0.0));
-    population.put("1.0,0.0", new PVector(1, 0.0));
-    population.put("2.0,0.0", new PVector(2, 0.0));
+    ArrayList<PVector> seeds = new ArrayList<PVector>();
+
+    seeds.add(new PVector(-4,-6));
+    seeds.add(new PVector(-4,-5));
+    seeds.add(new PVector(-3,-6));
+    seeds.add(new PVector(-3,-5));
+    seeds.add(new PVector(0,0));
+    seeds.add(new PVector(1,0));
+    seeds.add(new PVector(2,0));
+
+    for (PVector seed : seeds) {
+      population.put(seed.x + "," + seed.y, seed );
+    }
   }
 
   // Public: Run Life. Renders visually and ages the system.
