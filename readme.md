@@ -6,7 +6,7 @@ Adapted from the Conway's Game of Life example included with [Processing](http:
 
 ## Website
 
-View this project on the web at http://conway.skli.se/. The site is served up
+View this project on the web at http://skli.se/ConwaysGameOfLife. The site is served up
 by Github as a Jekyll site.
 
 ### Thanks
