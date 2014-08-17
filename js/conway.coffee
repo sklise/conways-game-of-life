@@ -51,12 +51,53 @@ w.nextGeneration = (n, world, width, height) ->
   else
     nextFromDead(n, world, width, height)
 
-conway = (s) ->
+w.advanceWorld = (world, width, height) ->
+  _.map world, (cell, i) -> nextGeneration(i,world,width,height)
+
+
+# Render helpers
+w.getCellCoords = (index, width) -> [index % width,index // width]
+
+w.renderWorld = (sketch, world, width, height, cellSize) ->
+  sketch.fill(255)
+  sketch.stroke(128)
+  sketch.rect(0,0,width*cellSize,height*cellSize)
+
+  sketch.fill 0
+  sketch.stroke 255
+
+  _.each world, (cell, index) ->
+    if cell
+      coords = getCellCoords index, width
+      sketch.rect(coords[0]*cellSize, coords[1]*cellSize,cellSize,cellSize)
+      true
+
+w.conway = (s) ->
+  width = height = 40
+  # Generate a blank world
+  world = _.map _.range(1600), -> return no
 
   s.setup = ->
     s.createCanvas 900, 700
+    s.frameRate(5)
 
-  # s.draw = ->
-    # console.log 'draw'
+    aliveCells = [64,65
+     104,107,
+     130,132,148,
+     168,172,175,176,177,188,195,196
+     208,228,235,236,
+     241,242,247,252,260,261,264,267,
+     281,282,288,296,298,301,304,305,
+     328,332,338,339,340,
+     370,372
 
-new p5(conway)
+    ]
+
+    _.each aliveCells, (a) -> world[a] = on
+
+    console.log world[64]
+
+  s.draw = ->
+    s.background(255)
+    renderWorld(s, world, width, height, 15)
+    world = advanceWorld(world,width,height)
