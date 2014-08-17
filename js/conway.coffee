@@ -59,10 +59,6 @@ w.advanceWorld = (world, width, height) ->
 w.getCellCoords = (index, width) -> [index % width,index // width]
 
 w.renderWorld = (sketch, world, width, height, cellSize) ->
-  sketch.fill(255)
-  sketch.stroke(128)
-  sketch.rect(0,0,width*cellSize,height*cellSize)
-
   sketch.fill 0
   sketch.stroke 255
 
@@ -78,9 +74,10 @@ w.conway = (s) ->
   world = _.map _.range(1600), -> return no
 
   s.setup = ->
-    s.createCanvas 900, 700
-    s.frameRate(5)
+    s.createCanvas 602, 602
+    s.frameRate(8)
 
+    # Gosper's Glider Guns
     aliveCells = [64,65
      104,107,
      130,132,148,
@@ -90,12 +87,9 @@ w.conway = (s) ->
      281,282,288,296,298,301,304,305,
      328,332,338,339,340,
      370,372
-
     ]
 
     _.each aliveCells, (a) -> world[a] = on
-
-    console.log world[64]
 
   s.draw = ->
     s.background(255)
