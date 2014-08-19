@@ -69,13 +69,17 @@ w.renderWorld = (sketch, world, width, height, cellSize) ->
       true
 
 w.conway = (s) ->
+
   width = height = 40
+  paused = false
+  speed = 8
+
   # Generate a blank world
   world = _.map _.range(1600), -> return no
 
   s.setup = ->
     s.createCanvas 602, 602
-    s.frameRate(8)
+    s.frameRate(speed)
 
     # Gosper's Glider Guns
     aliveCells = [64,65
@@ -91,7 +95,25 @@ w.conway = (s) ->
 
     _.each aliveCells, (a) -> world[a] = on
 
+    pauseButton = s.createButton("Play/Pause")
+    pauseButton.mouseClicked -> paused = !paused
+
+    slowDown = s.createButton("-")
+    slowDown.mouseClicked ->
+      speed = Math.max(1,speed-1)
+      frameRate.html("#{speed} generations/second")
+
+    speedUp = s.createButton("+")
+    speedUp.mouseClicked ->
+      speed = Math.min(60, speed+1)
+      frameRate.html("#{speed} generations/second")
+
+    frameRate = s.createSpan("#{speed} generations/second")
+
   s.draw = ->
+    s.frameRate(speed)
     s.background(255)
     renderWorld(s, world, width, height, 15)
-    world = advanceWorld(world,width,height)
+
+    unless paused
+      world = advanceWorld(world,width,height)
