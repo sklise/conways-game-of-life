@@ -3,7 +3,11 @@
 w = window
 
 # Function computes the state for the next generation of n in the world
-w.outOfBounds = (i, max) -> if i > max or i < 0 then true else false
+w.outOfBounds = (i, w, h) ->
+  if i[0] < 0 or i[1] < 0 or i[0] > h or i[1] > w
+    true
+  else
+    false
 
 w.getNeighborIndeces = (n, width) ->
   [
