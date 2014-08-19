@@ -16,14 +16,28 @@ describe("Conway", function () {
     })
 
     it("should return true if a value is above bounds", function () {
-      expect(outOfBounds([3,0],3,3)).toBe(false)
-      expect(outOfBounds([3,3],3,3)).toBe(false)
-      expect(outOfBounds([0,3],3,3)).toBe(false)
+      expect(outOfBounds([3,0],3,3)).toBe(true)
+      expect(outOfBounds([3,3],3,3)).toBe(true)
+      expect(outOfBounds([0,3],3,3)).toBe(true)
     })
   })
 
   describe("nextFromDead()", function () {})
   describe("nextFromLiving()",function () {})
+
+  describe("checkNeighbors", function () {
+    it("should yield the correct answer", function () {
+      world = [
+        [no, no, no],
+        [no, yes, no],
+        [yes, yes, yes]
+      ]
+
+      expect(checkNeighbors(1,1, world, world.length, world[0].length)).toBe(3)
+      expect(checkNeighbors(1,0, world, world.length, world[0].length)).toBe(1)
+      expect(checkNeighbors(0,2, world, world.length, world[0].length)).toBe(2)
+    })
+  })
 
   describe("nextGeneration()", function () {
     describe("cell is alive", function () {
@@ -58,19 +72,19 @@ describe("Conway", function () {
         ]
 
         worlds.forEach(function (world ) {
-          expect(nextGeneration(4, world)).toBe(true)
+          expect(nextGeneration(1,1, world)).toBe(true)
         })
       })
 
       it("should die if neighbors are less than 2 or greater than 3", function() {
 
         world = [
-          no, no, yes,
-          no, yes, yes,
-          yes, yes, yes
+          [no, no, yes],
+          [no, yes, yes],
+          [yes, yes, yes]
         ]
 
-        expect(nextGeneration(4, world)).toBe(false)
+        expect(nextGeneration(1,1, world)).toBe(false)
       })
     })
 
@@ -90,7 +104,7 @@ describe("Conway", function () {
         ]
 
         worlds.forEach(function (world) {
-          expect(nextGeneration(4,world)).toBe(true)
+          expect(nextGeneration(1,1,world)).toBe(true)
         })
       })
 
@@ -107,7 +121,7 @@ describe("Conway", function () {
             [yes, yes, yes]
           ]
         ]
-        expect(nextGeneration(4, world)).toBe(false)
+        expect(nextGeneration(1,1, world)).toBe(false)
       })
 
     })
