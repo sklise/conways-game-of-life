@@ -60,33 +60,29 @@ w.getCellCoords = (index, width) -> [index % width,index // width]
 w.renderWorld = (sketch, world, width, height, cellSize) ->
   sketch.stroke 200
 
-  _.each world, (row, index) ->
-    if cell
-      sketch.fill 0
-      coords = getCellCoords index, width
-      sketch.rect(coords[0]*cellSize, coords[1]*cellSize,cellSize,cellSize)
-      true
-    else
-      sketch.fill 255
-      coords = getCellCoords index, width
-      sketch.rect(coords[0]*cellSize, coords[1]*cellSize,cellSize,cellSize)
-      true
+  _.each world, (row, y) ->
+    _.each row, (cell, x) ->
+      if cell
+        sketch.fill 0
+
+        sketch.rect(x*cellSize, y*cellSize,cellSize,cellSize)
+        true
+      else
+        sketch.fill 255
+        sketch.rect(x*cellSize, y*cellSize,cellSize,cellSize)
+        true
+
+w.cellSize = 15
 
 w.conway = (s) ->
-
+  s.previousCell = []
   width = height = 40
   paused = false
   speed = 8
 
-  world = [
-    [no, no, yes],
-    [no, yes, yes],
-    [yes, yes, yes]
-  ]
-  console.log advanceWorld(world,3,3)
-
   # Generate a blank world
-  world = _.map _.range(1600), -> return no
+  rows = _.map _.range(40), -> return no
+  world = _.map rows, -> _.map(_.range(40),-> no)
 
   s.setup = ->
     s.createCanvas 600, 600
@@ -94,9 +90,9 @@ w.conway = (s) ->
 
     # Gosper's Glider Guns
     aliveCells = [
-      [1,24],[1,25],
-      [2,24],[2,27],
-      [3,10],[3,12],[3,28],
+      [24,1],[25,1],
+      [24,2],[27,2],
+      [10,3],[12,3],[28,3],
      # 168,172,175,176,177,188,195,196
      # 208,228,235,236,
      # 241,242,247,252,260,261,264,267,
@@ -125,10 +121,26 @@ w.conway = (s) ->
   s.draw = ->
     s.frameRate(1)
     s.background(255)
-    renderWorld(s, world, width, height, 15)
+    renderWorld(s, world, width, height, cellSize)
 
     # unless paused
-      # world = advanceWorld(world,width,height)
+    world = advanceWorld(world,width,height)
 
-  s.mouseClicked = ->
-    console.log s.mouseX, s.mouseY
+  s.mouseClicked = (e) ->
+    if e.toElement.tagName is "CANVAS"
+      x = s.mouseX // cellSize
+      y = s.mouseY // cellSize
+
+      world[y][x] = !world[y][x]
+
+  s.mouseDragged = (e) ->
+    if e.toElement.tagName is "CANVAS"
+      x = s.mouseX // cellSize
+      y = s.mouseY // cellSize
+
+      # check to see if the place we are dragging is different than the last
+      # drag event
+      if x isnt s.previousCell[0] or y isnt s.previousCell[1]
+        s.previousCell = [x,y]
+        world[y][x] = !world[y][x]
+        renderWorld(s, world, width, height, cellSize)
