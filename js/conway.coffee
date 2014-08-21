@@ -58,31 +58,26 @@ w.advanceWorld = (world, width, height) ->
 w.getCellCoords = (index, width) -> [index % width,index // width]
 
 w.renderWorld = (sketch, world, width, height, cellSize) ->
-  sketch.stroke 200
+  sketch.stroke 255
+  sketch.fill 0
 
   _.each world, (row, y) ->
     _.each row, (cell, x) ->
       if cell
-        sketch.fill 0
 
         sketch.rect(x*cellSize, y*cellSize,cellSize,cellSize)
         true
-      else
-        sketch.fill 255
-        sketch.rect(x*cellSize, y*cellSize,cellSize,cellSize)
-        true
-
-w.cellSize = 15
 
 w.conway = (s) ->
   s.previousCell = []
-  width = height = 40
+  w.cellSize = 10
+  width = height = 60
   paused = false
   speed = 4
 
   # Generate a blank world
-  rows = _.map _.range(40), -> return no
-  world = _.map rows, -> _.map(_.range(40),-> no)
+  rows = _.map _.range(height), -> return no
+  world = _.map rows, -> _.map(_.range(width),-> no)
 
   s.setup = ->
     s.createCanvas 600, 600
