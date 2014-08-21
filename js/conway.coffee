@@ -126,21 +126,23 @@ w.conway = (s) ->
     unless paused
       world = advanceWorld(world,width,height)
 
-  s.mouseClicked = (e) ->
-    if e.toElement.tagName is "CANVAS"
-      x = s.mouseX // cellSize
-      y = s.mouseY // cellSize
+  s.mouseReleased = (e) ->
+    x = s.mouseX // cellSize
+    y = s.mouseY // cellSize
 
+    if e.toElement.tagName is "CANVAS" and (x isnt s.previousCell[0] or y isnt s.previousCell[1])
+
+      s.previousCell = [x,y]
       world[y][x] = !world[y][x]
+      renderWorld(s, world, width, height, cellSize)
 
   s.mouseDragged = (e) ->
-    if e.toElement.tagName is "CANVAS"
-      x = s.mouseX // cellSize
-      y = s.mouseY // cellSize
+    x = s.mouseX // cellSize
+    y = s.mouseY // cellSize
 
-      # check to see if the place we are dragging is different than the last
-      # drag event
-      if x isnt s.previousCell[0] or y isnt s.previousCell[1]
-        s.previousCell = [x,y]
-        world[y][x] = !world[y][x]
-        renderWorld(s, world, width, height, cellSize)
+    # check to see if the place we are dragging is different than the last
+    # drag event
+    if e.toElement.tagName is "CANVAS" and (x isnt s.previousCell[0] or y isnt s.previousCell[1])
+      s.previousCell = [x,y]
+      world[y][x] = !world[y][x]
+      renderWorld(s, world, width, height, cellSize)
