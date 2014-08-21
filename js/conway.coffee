@@ -78,7 +78,7 @@ w.conway = (s) ->
   s.previousCell = []
   width = height = 40
   paused = false
-  speed = 8
+  speed = 1
 
   # Generate a blank world
   rows = _.map _.range(40), -> return no
@@ -119,12 +119,12 @@ w.conway = (s) ->
     frameRate = s.createSpan("#{speed} generations/second")
 
   s.draw = ->
-    s.frameRate(1)
+    s.frameRate(speed)
     s.background(255)
     renderWorld(s, world, width, height, cellSize)
 
-    # unless paused
-    world = advanceWorld(world,width,height)
+    unless paused
+      world = advanceWorld(world,width,height)
 
   s.mouseClicked = (e) ->
     if e.toElement.tagName is "CANVAS"
