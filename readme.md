@@ -7,6 +7,20 @@ Code_.
 
 in progress.
 
+## Development
+
+This site is built using [Jekyll](http://jekyllrb.com) and requires at least version 2.0.0 for asset compilation.
+
+To run this site locally, open Terminal and install Jekyll:
+
+    gem install jekyll
+
+Then in this folder, run
+
+    jekyll serve --watch
+
+You can then access the site at http://localhost:4000/ and the CoffeeScript file will be updated every time you save.
+
 ## License
 
 The MIT License (MIT)
