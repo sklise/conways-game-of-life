@@ -2,6 +2,14 @@ var widthCount = 160;
 var heightCount = 90;
 var renderedCellSize = 7;
 
+// Javascript doesn't have a proper "modulo" operator see: https://developer.mozilla.org /en-US/docs/Web/JavaScript/Reference/Operators/Arithmetic_Operators#Remainder_()
+// When % is passed a negative number for the divisor, the result is negative. For
+// looping around arrays we always need positive values.
+//
+// example:
+//    var widthCount = 15;
+//    -1 % 15 === -1; // Desired result is 14
+//    actualModulo(-1, 15) === 14
 function actualModulo(divisor, dividend) {
   var fakeMod = divisor % dividend;
 
@@ -92,7 +100,7 @@ function draw() {
       var cellState = world[yIndex][xIndex];
       if (count == 3) {
         world[yIndex][xIndex] = 1;
-      } else if ((count < 2 || count > 3) && cellState === 1) {
+      } else if (cellState === 1 && (count < 2 || count > 3)) {
         world[yIndex][xIndex] = 0;
       }
     });
