@@ -1,25 +1,12 @@
 # Conway's Game of Life
-*Conway's Game of Life simulation in [p5.js](https://github.com/lmccart/p5.js)*
+
+*Conway's Game of Life simulation in [p5.js](https://github.com/processing/p5.js)*
+
+[view](https://sklise.github.io/conways-game-of-life/)
 
 ### Thanks
 Thanks to [Dan Shiffman](https://github.com/shiffman) and his class _Nature of
 Code_.
-
-in progress.
-
-## Development
-
-This site is built using [Jekyll](http://jekyllrb.com) and requires at least version 2.0.0 for asset compilation.
-
-To run this site locally, open Terminal and install Jekyll:
-
-    gem install jekyll
-
-Then in this folder, run
-
-    jekyll serve --watch
-
-You can then access the site at http://localhost:4000/ and the CoffeeScript file will be updated every time you save.
 
 ## License
 
