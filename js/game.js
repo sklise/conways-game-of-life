@@ -95,6 +95,7 @@ gol.nextGeneration = function (world, neighborCounts) {
   return world;
 }
 
+// resets a world's cells with the provided density and returns the world.
 gol.populateWorld = function(world, density) {
   world.cells = gol.buildArray(world.width, world.height, gol.populate(density));
   return world;
@@ -146,8 +147,10 @@ function setup() {
 
   var generateButton = createButton('Regenerate');
   generateButton.mousePressed(function () {
-    world = gol.populateWorld(world, 0.35);
+    world = gol.populateWorld(world, sl.value()/ 100);
   });
+
+  var sl = createSlider(0,100,35);
 
   createCanvas(world.width * world.renderedCellSize, world.height * world.renderedCellSize);
 }
