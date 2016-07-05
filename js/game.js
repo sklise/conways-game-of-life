@@ -1,6 +1,15 @@
-var widthCount = 160;
-var heightCount = 90;
-var renderedCellSize = 7;
+
+
+var world = {
+  width: 160,
+  height: 90,
+  renderedCellSize: 8,
+  paused: false,
+  cells: []
+};
+
+// When you drag the mouse, we want to use the state of the cell you first clicked on as the inverse value to set for all other cells.
+var initiallyClickedCellState = 1;
 
 // Javascript doesn't have a proper "modulo" operator see: https://developer.mozilla.org /en-US/docs/Web/JavaScript/Reference/Operators/Arithmetic_Operators#Remainder_()
 // When % is passed a negative number for the divisor, the result is negative. For
@@ -59,50 +68,124 @@ gol.sumNeighbors = function (world, w, h, x, y) {
 }
 
 // Count up neighbors;
-gol.census = function (world, w, h) {
-  var newNeighborCounts = gol.buildArray(w, h, function() { return 0; });
-  world.forEach(function(rowArray, yIndex) {
+gol.census = function (world) {
+  var newNeighborCounts = gol.buildArray(world.width, world.height, function() { return 0; });
+  world.cells.forEach(function(rowArray, yIndex) {
     rowArray.forEach(function(cellState, xIndex) {
-      newNeighborCounts[yIndex][xIndex] = gol.sumNeighbors(world, w, h, xIndex, yIndex);
+      newNeighborCounts[yIndex][xIndex] = gol.sumNeighbors(world.cells, world.width, world.height, xIndex, yIndex);
     });
   });
 
   return newNeighborCounts;
 }
 
-var drawWorld = function () {
+gol.nextGeneration = function (world, neighborCounts) {
+  world.cells.forEach(function(rowArray, yIndex) {
+    rowArray.forEach(function(cellState, xIndex) {
+      var count = neighborCounts[yIndex][xIndex];
+      var cellState = world.cells[yIndex][xIndex];
+      if (count == 3) {
+        world.cells[yIndex][xIndex] = 1;
+      } else if (cellState === 1 && (count < 2 || count > 3)) {
+        world.cells[yIndex][xIndex] = 0;
+      }
+    });
+  });
+
+  return world;
+}
+
+gol.populateWorld = function(world, density) {
+  world.cells = gol.buildArray(world.width, world.height, gol.populate(density));
+  return world;
+}
+
+gol.clearWorld = function (world) {
+  world.cells = gol.buildArray(world.width, world.height, function () { return 0; });
+  return world;
+}
+
+var drawWorld = function (world) {
   fill(0,0,0);
-  world.forEach(function(rowArray, yIndex) {
+  world.cells.forEach(function(rowArray, yIndex) {
     rowArray.forEach(function(cellState, xIndex) {
       if (cellState === 1) {
-        rect(xIndex * renderedCellSize, yIndex * renderedCellSize, renderedCellSize, renderedCellSize);
+        rect(xIndex * world.renderedCellSize, yIndex * world.renderedCellSize, world.renderedCellSize, world.renderedCellSize);
       }
     });
   });
 }
 
-var world;
+var isMouseInBounds = function(world) {
+  var w = world.width * world.renderedCellSize;
+  if (mouseX > 0 && mouseY > 0 && mouseX <= w, mouseY <= world.height * world.renderedCellSize) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+var posToCellCoords = function (cellSize, x) {
+  return x - x%cellSize;
+}
 
 function setup() {
-  world = gol.buildArray(widthCount, heightCount, gol.populate(0.35));
-  createCanvas(widthCount * renderedCellSize, heightCount * renderedCellSize);
-  frameRate(10);
+  noStroke();
+  frameRate(20);
+  world = gol.populateWorld(world, 0.35);
+
+  var pauseButton = createButton('Pause');
+  pauseButton.mousePressed(function () {
+    world.paused = !world.paused;
+  });
+
+  var clearButton = createButton('Clear');
+  clearButton.mousePressed(function () {
+    world = gol.clearWorld(world);
+  });
+
+  var generateButton = createButton('Regenerate');
+  generateButton.mousePressed(function () {
+    world = gol.populateWorld(world, 0.35);
+  });
+
+  createCanvas(world.width * world.renderedCellSize, world.height * world.renderedCellSize);
 }
 
 function draw() {
   fill(255,255,255);
   background();
-  drawWorld();
-  var neighborCounts = gol.census(world, widthCount, heightCount);
-  world.forEach(function(rowArray, yIndex) {
-    rowArray.forEach(function(cellState, xIndex) {
-      var count = neighborCounts[yIndex][xIndex];
-      var cellState = world[yIndex][xIndex];
-      if (count == 3) {
-        world[yIndex][xIndex] = 1;
-      } else if (cellState === 1 && (count < 2 || count > 3)) {
-        world[yIndex][xIndex] = 0;
-      }
-    });
-  });
+  drawWorld(world);
+  // Update the world only if the world is not paused.
+  if (!world.paused) {
+    var neighborCounts = gol.census(world);
+    world = gol.nextGeneration(world, neighborCounts);
+  }
+
+  if (isMouseInBounds(world)) {
+    var xx = posToCellCoords(world.renderedCellSize,mouseX);
+    var yy = posToCellCoords(world.renderedCellSize,mouseY);
+    fill(0, 0, 255, 128);
+    rect(xx, yy, world.renderedCellSize, world.renderedCellSize);
+
+    if (mouseIsPressed) {
+      var xx = posToCellCoords(world.renderedCellSize,mouseX);
+      var yy = posToCellCoords(world.renderedCellSize,mouseY);
+      world.cells[yy / world.renderedCellSize][xx / world.renderedCellSize] = initiallyClickedCellState;
+    }
+  }
+
+}
+
+function mousePressed() {
+  var xx = posToCellCoords(world.renderedCellSize,mouseX);
+  var yy = posToCellCoords(world.renderedCellSize,mouseY);
+  initiallyClickedCellState = world.cells[yy / world.renderedCellSize][xx / world.renderedCellSize] ? 0 : 1;
+}
+
+function keyPressed(e) {
+  if (key === ' ') {
+    e.preventDefault();
+    world.paused = !world.paused;
+  }
 }
