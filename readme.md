@@ -2,7 +2,7 @@
 
 *Conway's Game of Life simulation in [p5.js](https://github.com/processing/p5.js)*
 
-[view](https://sklise.github.io/conways-game-of-life/)
+[view simulation](https://sklise.github.io/conways-game-of-life/)
 
 ### Thanks
 Thanks to [Dan Shiffman](https://github.com/shiffman) and his class _Nature of
