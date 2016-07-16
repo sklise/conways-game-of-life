@@ -1,1 +1,1 @@
-exclude: ["deploy.sh","node_modules/","package.json","readme.md"]
+exclude: ["deploy.sh","node_modules/","package.json","readme.md", "docs/public/","css/","test/"]
