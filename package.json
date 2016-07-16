@@ -2,7 +2,12 @@
   "name": "conwaysgameoflife",
   "version": "1.0.0",
   "description": "*Conway's Game of Life simulation in [p5.js](https://github.com/lmccart/p5.js)*",
-  "scripts": {},
+  "scripts": {
+    "build-docs": "docco js/game.js --css css/docs.css"
+  },
   "license": "MIT",
-  "repository": "sklise/conways-game-of-life"
+  "repository": "sklise/conways-game-of-life",
+  "devDependencies": {
+    "docco": "^0.7.0"
+  }
 }
