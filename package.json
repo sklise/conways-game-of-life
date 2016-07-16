@@ -2,6 +2,7 @@
   "name": "conwaysgameoflife",
   "version": "1.0.0",
   "description": "*Conway's Game of Life simulation in [p5.js](https://github.com/lmccart/p5.js)*",
-  "scripts": {}
-  "license": "MIT"
+  "scripts": {},
+  "license": "MIT",
+  "repository": "sklise/conways-game-of-life"
 }
